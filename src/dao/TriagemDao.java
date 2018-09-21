@@ -27,7 +27,7 @@ public class TriagemDao extends DaoBase{
 			while (rs.next()) {
 				Credito obj=new Credito();
 				 
-				obj.setSetor(rs.getString("setor"));
+/*				obj.setSetor(rs.getString("setor"));
 				Date dt = rs.getDate("DT_RECEBIMENTO");
 				String dtString =  rs.getDate("DT_RECEBIMENTO").toString();
 				obj.setProcesso(rs.getString("processo"));
@@ -38,10 +38,10 @@ public class TriagemDao extends DaoBase{
 				obj.setValorDoPedido(rs.getDouble("VALOR_PEDIDO"));
 				obj.setValorPago(rs.getDouble("VALOR_PAGO"));
 				obj.setLocalizacao(rs.getString("localizacao"));
-				obj.setObservacao(rs.getString("observacao"));
+				obj.setObservacao(rs.getString("observacao"));*/
 				
 				lista.add(obj);
-				System.out.println (dtString);  
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

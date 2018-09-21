@@ -9,6 +9,7 @@ import jdbc.DaoBase;
 
 public class EmpresaDao extends DaoBase{
 	
+
 	
 	public List buscaTodos(){
 		List<String> lista = new ArrayList<String>();
@@ -33,7 +34,7 @@ public class EmpresaDao extends DaoBase{
 	
 	public ResultSet buscaTodosComResultset(){
 
-		String obj;
+		
 		
 		String query = "select nome,deposito_mensal from tb_empresa t1";		
 		

@@ -1,32 +1,57 @@
 package modelo;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Credito {
-	private String		setor ;
-	private Date		dataRecebimento;
+	private int			id_plano_execucao;
+	private String		dataRecebimento;
+	private String		setor ;	
 	private String 		processo ;
-	private String		exequente;
-	private Calendar	anterioridade;
-	private String		in_classificacao;
-	private String 		alvPgParcial; 
-	private double		valorDoPedido;
-	private double		valorPago;
+	private String		dataDistribuicao;
+	private String		nomeExequente;
+	private String		dataAnterioridade;
+	private String		in_prioridadade;
+	private String	valorDoPedido;
 	private String		localizacao; 
 	private String		observacao;
-	
+/*	
+ * http://blog.caelum.com.br/arredondamento-no-java-do-double-ao-bigdecimal/
+	sempre usar o construtor que trabalha com Strings, assim o BigDecimal vai internamente fazer o parsing 
+	desses números sem que eles sejam armazenados em um double, evitando os problemas de precisão:
+
+		// atencao! usando String no construtor:
+		BigDecimal big1 = new BigDecimal("0.1");
+		BigDecimal big2 = new BigDecimal("0.2");
+		 
+		System.out.println(big1.add(big2));
+		Finalmente obtendo o resultado esperado. Há ainda importantes observações sobre o BigDecimal: por padrão ele não fará 
+		nenhum tipo de arredondamento, o que o obriga a lançar java.lang.ArithmeticException no caso de uma dízima decimal 
+		(tentar dividir 1/3 por exemplo). Nesses casos é necessário delimitar a quantidade de bits a serem usados ou escolher o modo de arredondamento:
+
+		BigDecimal big1 = new BigDecimal("1");
+		BigDecimal big2 = new BigDecimal("3");
+		 
+		System.out.println(big1.divide(big2, 3, RoundingMode.UP));
+	*/
+	public int getId_plano_execucao() {
+		return id_plano_execucao;
+	}
+	public void setId_plano_execucao(int id_plano_execucao) {
+		this.id_plano_execucao = id_plano_execucao;
+	}
+	public String getDataRecebimento() {
+		return dataRecebimento;
+	}
+	public void setDataRecebimento(String dataRecebimento) {
+		this.dataRecebimento = dataRecebimento;
+	}
 	public String getSetor() {
 		return setor;
 	}
 	public void setSetor(String setor) {
 		this.setor = setor;
-	}
-	public Date getDataRecebimento() {
-		return dataRecebimento;
-	}
-	public void setDataRecebimento(Date dataRecebimento) {
-		this.dataRecebimento = dataRecebimento;
 	}
 	public String getProcesso() {
 		return processo;
@@ -34,41 +59,35 @@ public class Credito {
 	public void setProcesso(String processo) {
 		this.processo = processo;
 	}
-	public String getExequente() {
-		return exequente;
+	public String getDataDistribuicao() {
+		return dataDistribuicao;
 	}
-	public void setExequente(String exequente) {
-		this.exequente = exequente;
+	public void setDataDistribuicao(String dataDistribuicao) {
+		this.dataDistribuicao = dataDistribuicao;
 	}
-	public Calendar getAnterioridade() {
-		return anterioridade;
+	public String getNomeExequente() {
+		return nomeExequente;
 	}
-	public void setAnterioridade(Calendar anterioridade) {
-		this.anterioridade = anterioridade;
+	public void setNomeExequente(String nomeExequente) {
+		this.nomeExequente = nomeExequente;
 	}
-	public String getIn_classificacao() {
-		return in_classificacao;
+	public String getDataAnterioridade() {
+		return dataAnterioridade;
 	}
-	public void setIn_classificacao(String in_classificacao) {
-		this.in_classificacao = in_classificacao;
+	public void setDataAnterioridade(String dataAnterioridade) {
+		this.dataAnterioridade = dataAnterioridade;
 	}
-	public String getAlvPgParcial() {
-		return alvPgParcial;
+	public String getIn_prioridadade() {
+		return in_prioridadade;
 	}
-	public void setAlvPgParcial(String alvPgParcial) {
-		this.alvPgParcial = alvPgParcial;
+	public void setIn_prioridadade(String in_prioridadade) {
+		this.in_prioridadade = in_prioridadade;
 	}
-	public double getValorDoPedido() {
+	public String getValorDoPedido() {
 		return valorDoPedido;
 	}
-	public void setValorDoPedido(double valorDoPedido) {
+	public void setValorDoPedido(String valorDoPedido) {
 		this.valorDoPedido = valorDoPedido;
-	}
-	public double getValorPago() {
-		return valorPago;
-	}
-	public void setValorPago(double valorPago) {
-		this.valorPago = valorPago;
 	}
 	public String getLocalizacao() {
 		return localizacao;
@@ -82,6 +101,4 @@ public class Credito {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-		
-	
-}
+	}

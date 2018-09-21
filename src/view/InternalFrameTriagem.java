@@ -26,17 +26,24 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import util.MesDoAno;
-import util.Util;
+import utilitarios.MesDoAno;
+import utilitarios.Util;
 import dao.EmpresaDao;
 import dao.TriagemDao;
+
 import javax.swing.SwingConstants;
 
+import modelo.Processo;
+
 public class InternalFrameTriagem extends JInternalFrame {
+	//variavel poder passar aos parâmetros a referencia a este Frame
+	private InternalFrameTriagem esteFrame;
+	Processo processoRecebido;
+	
+	
 	private JPanel contentPane;
 	private JTable tabela;
-	private JButton btnIncluir, btnSair;
-	private JComboBox cboEmpresa;
+	private JButton btnSair;
 	JLabel lbl1;
 	private JLabel lblSetor;
 	private JTextField txtSetor;
@@ -48,12 +55,8 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JLabel lblNewLabel_1;
 	private JTextField txtAnterioridade;
 	private JLabel lblNewLabel_2;
-	private JLabel lblAlvPagParcial;
-	private JTextField txtAlvPagParcial;
 	private JLabel lblNewLabel_3;
 	private JTextField txtValorPedido;
-	private JLabel lblNewLabel_4;
-	private JTextField txtValorPago;
 	private JLabel lblNewLabel_5;
 	private JTextField txtLocalizacao;
 	private JTextField txtObservacao;
@@ -61,17 +64,21 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JLabel lblObservao;
 	private JPanel pnlInclusao;
 	private JTextField txtExequente;
-	private JPanel panel_3;
 	private JPanel panel_22;
 	private JPanel panel_23;
-	private JButton btnSelecionarEmpresa;
-	private JButton btnTabela;
-	private JButton btnInclusao;
-	private JPanel panel_24;
+	private JButton btnSelecionarPlano;
 	private JLabel lblEmpresa;
 	private JPanel pnlTabela;
-	private JPanel panel_1;
 	private JComboBox comboBox;
+	private JPanel panel;
+	private JPanel panel_4;
+	private JPanel panel_5;
+	private JLabel lblNewLabel_4;
+	private JTextField txtDataDistribuicao;
+	private JButton btnProcesso;
+	private JPanel panel_1;
+	private JPanel panel_3;
+	private JPanel panel_6;
 
 	/**
 	 * Launch the application.
@@ -106,182 +113,145 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		panel_23 = new JPanel();
 		contentPane.add(panel_23, BorderLayout.NORTH);
-		panel_23.setLayout(new BorderLayout(10, 5));
-
-		panel_24 = new JPanel();
-		panel_24.setBorder(new LineBorder(new Color(0, 0, 0)));
-		FlowLayout flowLayout_5 = (FlowLayout) panel_24.getLayout();
-		flowLayout_5.setAlignment(FlowLayout.LEFT);
-		panel_23.add(panel_24, BorderLayout.CENTER);
-
-		btnTabela = new JButton("Tabela");
-		btnTabela.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				preparaParaTabela();
-			}
-		});
-		btnTabela.setEnabled(false);
-		panel_24.add(btnTabela);
-
-		btnInclusao = new JButton("Inclus\u00E3o");
-		btnInclusao.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				preparaParaInclusao();
-				;
-			}
-		});
-		btnInclusao.setEnabled(false);
-		panel_24.add(btnInclusao);
+		panel_23.setLayout(new GridLayout(3, 1, 0, 0));
 
 		panel_22 = new JPanel();
 		panel_22.setBorder(new LineBorder(new Color(0, 0, 0)));
-		FlowLayout flowLayout = (FlowLayout) panel_22.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel_23.add(panel_22, BorderLayout.NORTH);
+		panel_23.add(panel_22);
+		panel_22.setLayout(new BorderLayout(0, 0));
+		
+		panel_4 = new JPanel();
+		panel_22.add(panel_4, BorderLayout.WEST);
 
-		lbl1 = new JLabel("Empresa");
-		panel_22.add(lbl1);
-
-		cboEmpresa = new JComboBox();
-		panel_22.add(cboEmpresa);
-
-		btnSelecionarEmpresa = new JButton("Ok");
-		btnSelecionarEmpresa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				preparaParaCadastro();
-			}
-		});
-		btnSelecionarEmpresa.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnSelecionarEmpresa.setForeground(Color.BLUE);
-		panel_22.add(btnSelecionarEmpresa);
+		lbl1 = new JLabel("Plano");
+		panel_4.add(lbl1);
 
 		lblEmpresa = new JLabel("New label");
+		panel_4.add(lblEmpresa);
 		lblEmpresa.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblEmpresa.setForeground(Color.RED);
-		panel_22.add(lblEmpresa);
+				
+		panel = new JPanel();
+		panel_22.add(panel, BorderLayout.EAST);
 
-		pnlInclusao = new JPanel();
-		panel_23.add(pnlInclusao, BorderLayout.SOUTH);
-		pnlInclusao.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlInclusao.setLayout(new GridLayout(3, 8, 5, 5));
-
-		lblSetor = new JLabel("Setor");
-		lblSetor.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblSetor);
-
-		txtSetor = new JTextField();
-		pnlInclusao.add(txtSetor);
-		txtSetor.setEnabled(false);
-		txtSetor.setColumns(10);
-
-		lblDataRecebimento = new JLabel("Data Recebimento");
-		lblDataRecebimento.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblDataRecebimento);
-
-		txtDataRecebimento = new JTextField();
-		pnlInclusao.add(txtDataRecebimento);
-		txtDataRecebimento.setEnabled(false);
-		txtDataRecebimento.setColumns(7);
-
-		lblProcesso = new JLabel("Processo");
-		lblProcesso.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblProcesso);
-
-		txtProcesso = new JTextField();
-		pnlInclusao.add(txtProcesso);
-		txtProcesso.setEnabled(false);
-		txtProcesso.setColumns(10);
-
-		lblNewLabel_3 = new JLabel("Valor Pedido");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel_3);
-
-		txtValorPedido = new JTextField();
-		pnlInclusao.add(txtValorPedido);
-		txtValorPedido.setEnabled(false);
-		txtValorPedido.setColumns(5);
-
-		lblNewLabel_1 = new JLabel("Anterioridade");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel_1);
-
-		txtAnterioridade = new JTextField();
-		pnlInclusao.add(txtAnterioridade);
-		txtAnterioridade.setEnabled(false);
-		txtAnterioridade.setColumns(10);
-
-		lblNewLabel_2 = new JLabel("Classifica\u00E7\u00E3o");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel_2);
-		
-		comboBox = new JComboBox();
-		comboBox.setEnabled(false);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"a", "b"}));
-		pnlInclusao.add(comboBox);
-
-		lblAlvPagParcial = new JLabel("Alv. Pag Parcial");
-		lblAlvPagParcial.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblAlvPagParcial);
-
-		txtAlvPagParcial = new JTextField();
-		pnlInclusao.add(txtAlvPagParcial);
-		txtAlvPagParcial.setEnabled(false);
-		txtAlvPagParcial.setColumns(10);
-
-		lblNewLabel_4 = new JLabel("Valor Pago");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel_4);
-
-		txtValorPago = new JTextField();
-		pnlInclusao.add(txtValorPago);
-		txtValorPago.setEnabled(false);
-		txtValorPago.setColumns(10);
-
-		lblNewLabel = new JLabel("Exequente");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel);
-
-		txtExequente = new JTextField();
-		pnlInclusao.add(txtExequente);
-		txtExequente.setEnabled(false);
-		txtExequente.setColumns(20);
-
-		lblNewLabel_5 = new JLabel("Localiza\u00E7\u00E3o");
-		lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblNewLabel_5);
-
-		txtLocalizacao = new JTextField();
-		pnlInclusao.add(txtLocalizacao);
-		txtLocalizacao.setEnabled(false);
-		txtLocalizacao.setColumns(15);
-
-		lblObservao = new JLabel("Observa\u00E7\u00E3o");
-		lblObservao.setHorizontalAlignment(SwingConstants.RIGHT);
-		pnlInclusao.add(lblObservao);
-
-		txtObservacao = new JTextField();
-		pnlInclusao.add(txtObservacao);
-		txtObservacao.setEnabled(false);
-		txtObservacao.setColumns(15);
-
-		panel_1 = new JPanel();
-		pnlInclusao.add(panel_1);
-
-		panel_3 = new JPanel();
-		FlowLayout flowLayout_13 = (FlowLayout) panel_3.getLayout();
-		flowLayout_13.setHgap(30);
-		flowLayout_13.setAlignment(FlowLayout.RIGHT);
-		pnlInclusao.add(panel_3);
-
-		btnIncluir = new JButton("Incluir");
-		panel_3.add(btnIncluir);
-		btnIncluir.setForeground(Color.BLUE);
-		btnIncluir.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnIncluir.addActionListener(new ActionListener() {
+		btnSelecionarPlano = new JButton("Plano");
+		panel.add(btnSelecionarPlano);
+		btnSelecionarPlano.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				incluirRegistro();
+				//selecionaProcesso(this);
 			}
 		});
+		btnSelecionarPlano.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSelecionarPlano.setForeground(Color.BLUE);
+
+		pnlInclusao = new JPanel();
+		panel_23.add(pnlInclusao);
+		pnlInclusao.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlInclusao.setLayout(new BorderLayout(0, 0));
+
+		panel_1 = new JPanel();
+		pnlInclusao.add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		lblProcesso = new JLabel("Processo");
+		panel_1.add(lblProcesso);
+		lblProcesso.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtProcesso = new JTextField();
+		panel_1.add(txtProcesso);
+		txtProcesso.setColumns(10);
+
+		lblSetor = new JLabel("Setor");
+		panel_1.add(lblSetor);
+		lblSetor.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtSetor = new JTextField();
+		panel_1.add(txtSetor);
+		txtSetor.setColumns(7);
+
+		lblNewLabel = new JLabel("Exequente");
+		panel_1.add(lblNewLabel);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtExequente = new JTextField();
+		panel_1.add(txtExequente);
+		txtExequente.setColumns(40);
+
+		lblNewLabel_4 = new JLabel("Data Distribui\u00E7\u00E3o");
+		panel_1.add(lblNewLabel_4);
+
+		txtDataDistribuicao = new JTextField();
+		panel_1.add(txtDataDistribuicao);
+		txtDataDistribuicao.setColumns(7);
+
+		panel_3 = new JPanel();
+		pnlInclusao.add(panel_3, BorderLayout.EAST);
+
+		btnProcesso = new JButton("Processo");
+		btnProcesso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selecionaProcesso();
+			}
+		});
+		btnProcesso.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnProcesso.setForeground(Color.BLUE);
+		panel_3.add(btnProcesso);
+
+		panel_5 = new JPanel();
+		panel_23.add(panel_5);
+		panel_5.setLayout(new BorderLayout(0, 0));
+
+		panel_6 = new JPanel();
+		panel_5.add(panel_6, BorderLayout.CENTER);
+		panel_6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		lblDataRecebimento = new JLabel("Data Recebimento");
+		panel_6.add(lblDataRecebimento);
+		lblDataRecebimento.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtDataRecebimento = new JTextField();
+		panel_6.add(txtDataRecebimento);
+		txtDataRecebimento.setColumns(7);
+
+		lblNewLabel_1 = new JLabel("Anterioridade");
+		panel_6.add(lblNewLabel_1);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtAnterioridade = new JTextField();
+		panel_6.add(txtAnterioridade);
+		txtAnterioridade.setColumns(7);
+
+		lblNewLabel_2 = new JLabel("Prioridade");
+		panel_6.add(lblNewLabel_2);
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		comboBox = new JComboBox();
+		panel_6.add(comboBox);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"a", "b"}));
+
+		lblNewLabel_3 = new JLabel("Valor Pedido");
+		panel_6.add(lblNewLabel_3);
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtValorPedido = new JTextField();
+		panel_6.add(txtValorPedido);
+		txtValorPedido.setColumns(9);
+
+		lblNewLabel_5 = new JLabel("Localiza\u00E7\u00E3o");
+		panel_6.add(lblNewLabel_5);
+		lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtLocalizacao = new JTextField();
+		panel_6.add(txtLocalizacao);
+		txtLocalizacao.setColumns(20);
+
+		lblObservao = new JLabel("Observa\u00E7\u00E3o");
+		panel_6.add(lblObservao);
+		lblObservao.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		txtObservacao = new JTextField();
+		panel_6.add(txtObservacao);
+		txtObservacao.setColumns(20);
 
 		pnlTabela = new JPanel();
 		pnlTabela.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -290,13 +260,14 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		tabela = new JTable();
 		tabela.setEnabled(false);
-		tabela.setModel(new DefaultTableModel(new Object[][] { { null, null,
-				null, null, null, null, null, null, null, null, null }
-
-		}, new String[] { "Setor", "Data Recebimento", "Processo", "Exequente",
-				"Anterioridade", "Classifica\u00E7\u00E3o", "Alv. Pg Parcial",
-				"Valor do Pedido:", "Valor Pago", "Localiza\u00E7\u00E3o",
-				"Observa\u00E7\u00E3o" }));
+		tabela.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"Processo", "Setor", "Exequente", "Data Recebimento", "Prioridade", "Valor do Pedido:", "Valor Pedidos", "Localliza\u00E7\u00E3o", "Observa\u00E7\u00E3o"
+			}
+		));
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		pnlTabela.add(scrollPane);
 
@@ -314,51 +285,25 @@ public class InternalFrameTriagem extends JInternalFrame {
 		panel_2.add(btnSair);
 		/*
 		 * ======================================================= C´O D I G O P
-		 * E R S O N A L I Z A D O
+		 * P E R S O N A L I Z A D O
 		 * ======================================================
 		 */
 		setSize(1300, 800);
-		
+		esteFrame=this; 
 		/* apos carregamento da janela */
 		// populaComboDeClassificacoes();
-
-		/* populaComboDeEmpresas(); */
 	
-		pnlInclusao.setVisible(false);
-		pnlTabela.setVisible(false);
+
 	}
 
-	private void populaComboDeEmpresas() {
-		EmpresaDao dao = new EmpresaDao();
-		List<String> lista = dao.buscaTodos();
 
-		for (Iterator iterator = lista.iterator(); iterator.hasNext();) {
-			String obj = (String) iterator.next();
-			cboEmpresa.addItem(obj);
-		}
-		cboEmpresa.setSelectedIndex(-1); // limpa combo
+	private void selecionaProcesso() {	
+		DialogLocalizarProcesso dialogo=new DialogLocalizarProcesso(esteFrame);
+		dialogo.setVisible(true);
+		System.out.println(processoRecebido.getNumCnj()+ processoRecebido.getExequente()+processoRecebido.getSetor()+processoRecebido.getDataDistribuicao());
+		
 	}
-
-	private void incluirRegistro() {
-		validaDados();
-		// salva em BD
-
-		for (int i = 0; i < tabela.getRowCount(); i++) {
-			String[] valores = new String[10];
-			String valorColuna;
-
-			valorColuna = (String) tabela.getModel().getValueAt(i, 0); // 3=coluna;
-			valores[0] = valorColuna;
-
-			valorColuna = (String) tabela.getModel().getValueAt(i, 1); // 3=coluna;
-			valores[1] = valorColuna;
-
-			new TriagemDao().insereLinha(valores);
-		}
-
-		populaTabelaComDadosDoBanco();
-	}
-
+	
 	private void populaTabelaComDadosDoBanco() {
 
 		ResultSet rs = new TriagemDao().buscaRsPorEmpresa(1);
@@ -379,23 +324,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 	};
 
-	private void preparaParaCadastro() {	
-		pnlInclusao.setVisible(true);
-		pnlTabela.setVisible(true);
-		Util.bloquearLiberarCampos(pnlInclusao,true);
-		Util.bloquearLiberarCampos(pnlTabela,false);
-		 
-		btnTabela.setEnabled(true);
-		btnInclusao.setEnabled(false);
 
-	}
-
-	private void preparaParaTabela() {
-		tabela.setEnabled(false);
-	}
-
-	private void preparaParaInclusao() {
-
+	
+	public void recebeProcessoDoDialog(Processo proc){
+		processoRecebido=proc;
 	}
 
 	private void fechaFrame() {	

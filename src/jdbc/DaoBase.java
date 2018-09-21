@@ -32,6 +32,19 @@ public class DaoBase {
 		}
 	}
 
+	protected void executaDML(String query){
+
+		System.out.println(query);
+		PreparedStatement stmt;
+				
+		try {
+			stmt = connection.prepareStatement(query);
+			stmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	protected ResultSet executaBusca(String query){
 

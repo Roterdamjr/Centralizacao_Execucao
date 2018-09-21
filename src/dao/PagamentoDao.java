@@ -25,7 +25,7 @@ public class PagamentoDao extends DaoBase{
 			while (rs.next()) {
 				Credito obj=new Credito();
 				 
-				obj.setSetor(rs.getString("setor"));
+/*				obj.setSetor(rs.getString("setor"));
 				Date dt = rs.getDate("DT_RECEBIMENTO");
 				obj.setDataRecebimento(dt);
 				obj.setProcesso(rs.getString("processo"));
@@ -36,7 +36,7 @@ public class PagamentoDao extends DaoBase{
 				obj.setValorDoPedido(rs.getDouble("VALOR_PEDIDO"));
 				obj.setValorPago(rs.getDouble("VALOR_PAGO"));
 				obj.setLocalizacao(rs.getString("localizacao"));
-				obj.setObservacao(rs.getString("observacao"));
+				obj.setObservacao(rs.getString("observacao"));*/
 				
 				lista.add(obj);
 				//System.out.println (rs.getString("exequente"));  

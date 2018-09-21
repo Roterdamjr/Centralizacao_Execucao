@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,14 +23,17 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import util.Util;
+
+import utilitarios.Util;
 import dao.EmpresaDao;
 import dao.TriagemDao;
-import javax.swing.SwingConstants;
 
+import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+
 import javax.swing.border.BevelBorder;
 
 public class InternalFrameEmpresa extends JInternalFrame {

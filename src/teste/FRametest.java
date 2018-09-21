@@ -43,5 +43,5 @@ public class FRametest extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(3, 4, 0, 0));
 	}
-    
+
 }
