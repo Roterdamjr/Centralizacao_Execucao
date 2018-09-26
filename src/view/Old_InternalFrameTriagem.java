@@ -27,8 +27,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import utilitarios.MesDoAno;
-import utilitarios.Util;
-import dao.EmpresaDao;
+import utilitarios.Utilitario;
+import dao.PlanoExecucaoDao;
 import dao.TriagemDao;
 
 import javax.swing.SwingConstants;
@@ -302,7 +302,7 @@ public class Old_InternalFrameTriagem extends JInternalFrame {
 	}
 
 	private void populaComboDeEmpresas() {
-		EmpresaDao dao = new EmpresaDao();
+		PlanoExecucaoDao dao = new PlanoExecucaoDao();
 		List<String> lista = dao.buscaTodos();
 
 		for (Iterator iterator = lista.iterator(); iterator.hasNext();) {
@@ -355,8 +355,8 @@ public class Old_InternalFrameTriagem extends JInternalFrame {
 	private void preparaParaCadastro() {	
 		pnlInclusao.setVisible(true);
 		pnlTabela.setVisible(true);
-		Util.bloquearLiberarCampos(pnlInclusao,true);
-		Util.bloquearLiberarCampos(pnlTabela,false);
+		Utilitario.bloquearLiberarCampos(pnlInclusao,true);
+		Utilitario.bloquearLiberarCampos(pnlTabela,false);
 		 
 
 

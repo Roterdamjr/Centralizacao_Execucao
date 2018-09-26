@@ -26,8 +26,8 @@ import javax.swing.table.TableColumn;
 
 import utilitarios.MesDoAno;
 import utilitarios.TipoPrioridade;
-import utilitarios.Util;
-import dao.EmpresaDao;
+import utilitarios.Utilitario;
+import dao.PlanoExecucaoDao;
 import dao.TriagemDao;
 
 import javax.swing.JTextField;
@@ -413,9 +413,9 @@ public class FrameTriagem extends JFrame {
 		panel.add(panel_4);
 		panel_4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		/*
-		 * ======================================================= C´O D I G O P
-		 * E R S O N A L I Z A D O
-		 * ======================================================
+		 * ======================================================= 
+		 * C´O D I G O 		P E R S O N A L I Z A D O
+		 * =======================================================
 		 */
 		setSize(1300, 800);
 		this.setLocationRelativeTo(null);
@@ -432,14 +432,16 @@ public class FrameTriagem extends JFrame {
 	/******************************************************************************************************/
 
 	private void populaComboDeEmpresas() {
-		EmpresaDao dao = new EmpresaDao();
+		// resultset populando combobox
+		PlanoExecucaoDao dao = new PlanoExecucaoDao();
 		List<String> lista = dao.buscaTodos();
 
 		for (Iterator iterator = lista.iterator(); iterator.hasNext();) {
 			String obj = (String) iterator.next();
 			cboEmpresa.addItem(obj);
 		}
-		cboEmpresa.setSelectedIndex(-1); // limpa combo
+		// faz combobox selecionar vazio
+		cboEmpresa.setSelectedIndex(-1); 
 	}
 
 	private void incluirRegistro() {

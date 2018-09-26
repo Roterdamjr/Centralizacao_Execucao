@@ -1,66 +1,101 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import modelo.Processo;
 import jdbc.DaoBasePJe1G;
 
 public class ProcessoPJe1GDao extends DaoBasePJe1G{
+
+	/*
+	 * 0101921-48.2017.5.01.0003
+select dt_autuacao, ds_sigla
+ from pje.tb_processo_trf pr
+join pje.tb_orgao_julgador oj on oj.id_orgao_julgador=pr.id_orgao_julgador
+where nr_sequencia= 0101921
+and nr_digito_verificador=48
+and nr_ano=2017
+and nr_origem_processo =0003
+	*/
+	
+	public Processo buscaDados(String numeroCnj) throws Exception{
+
+		Processo processo=new Processo();
 		
-	public String[] buscaDados(String proc, String sistema) throws Exception{
-		String[] array = new String[6];
+		String numeroCnjDesformatado=numeroCnj.replace(".", "").replace("-", "");
+	
+		int nr_sequencia = Integer.parseInt(numeroCnjDesformatado.substring(0,7));
+		int nr_digito_verificador = Integer.parseInt(numeroCnjDesformatado.substring(7,9));
+		int nr_ano =Integer.parseInt(numeroCnjDesformatado.substring(9,13));
+		int nr_origem_processo =Integer.parseInt(numeroCnjDesformatado.substring(16));
 		
-				
-		String query = "select " +  
-					"	case af.nm_agrupamento_fase  " + 
-					"		when 'Arquivados' then 'Arquivado' " + 
-					"		when 'Finalizados' then 'Finalizado' " + 
-					"		WHEN 'Não classificado' THEN 'NCL' " + 
-					"		else  'Em andamento' " + 
-					"	end as situacao, " +
-					" af.nm_agrupamento_fase ," +
-					" (SELECT   oj.ds_orgao_julgador || ' - ' ||  taskinst.name_ 	localizacao " + 		
-					"	FROM jbpm_taskinstance taskinst  " + 
-					"	JOIN tb_tarefa_jbpm tj ON tj.id_jbpm_task::integer = taskinst.task_ " + 
-					" JOIN jbpm_task task                      ON task.id_ = taskinst.task_" +
-					"	JOIN jbpm_processdefinition procdef      ON procdef.id_ = task.processdefinition_ " + 
-					" JOIN tb_processo_instance procinstcore   ON procinstcore.id_proc_inst = taskinst.procinst_" +
-					"	JOIN tb_processo proc                    ON proc.id_processo::integer = procinstcore.id_processo " + 
-					"	JOIN tb_processo_trf proctrf             ON proctrf.id_processo_trf::integer = proc.id_processo::integer " +  
-					"	inner join pje.tb_orgao_julgador oj   on oj.id_orgao_julgador = proctrf.id_orgao_julgador " + 
-					"	where proctrf.id_processo_trf=pr.id_processo 	          " + 
-					"	order by taskinst.create_ desc " + 
-					"	limit 1), " +
-					" (select  to_char(pe.dt_atualizacao,'dd/MM/yyyy') ||' '|| DS_TEXTO_FINAL_EXTERNO " +
-							" from pje.tb_processo proc"   +
-							" left join pje.tb_processo_evento pe on pe.id_processo=proc.id_processo " +
-							" left join pje.tb_evento e on e.id_evento=pe.id_evento " +
-							" where proc.id_processo=pr.id_processo " +
-							" order by  dt_atualizacao desc limit 1) ult_movimento " +
-					" from pje.tb_processo pr " +  
-					" left join pje_jt.tb_agrupamento_fase af on af.id_agrupamento_fase = pr.id_agrupamento_fase " + 
-					" where af.nm_agrupamento_fase <> 'Elaboração' " + 
-					" and nr_processo ='" +proc.trim() + "'";		
+		String query = "select to_char(dt_autuacao,'dd/mm/yyyy'), ds_sigla " + 
+						" from pje.tb_processo_trf pr " +
+						" join pje.tb_orgao_julgador oj on oj.id_orgao_julgador=pr.id_orgao_julgador " +
+						" where nr_sequencia=" +  nr_sequencia +
+						" and nr_digito_verificador="+nr_digito_verificador +
+						" and nr_ano="  + nr_ano +
+						" and nr_origem_processo =" +nr_origem_processo	;		
 		
 		executaBusca(query);
 
+		boolean achou=false;
 		try {
-			array[0]=proc;
-			while (rs.next()) {
-				
-				array[1]=rs.getString(1);
-				array[2]=rs.getString(2);
-				array[3]=rs.getString(3);
-				array[4]=sistema;
-				array[5]=rs.getString(4);
+			while (rs.next()) {	
+				achou=true;
+				processo.setDataDistribuicao(rs.getString(1));
+				processo.setSiglaSetor(rs.getString(2));
+				processo.setPartes(buscaPartes(numeroCnjDesformatado));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return array;
+		
+		if (achou){
+			processo.setSistemaOrigem("PJe1G");
+			return processo;
+		}
+		else{ 
+			return null;
+		}
 	}
 	
-
+	private ArrayList<String> buscaPartes(String numeroCnjDesformatado) throws Exception{
+		
+		/*select ul.ds_nome 
+		from pje.tb_processo_parte pp 
+		join pje.tb_usuario_login ul  on ul.id_usuario = pp.id_pessoa
+		join pje.tb_processo_trf pr on pr.id_processo_trf=pp.id_processo_trf
+		 where nr_sequencia= 0101921
+		and nr_digito_verificador=48
+		and nr_ano=2017
+		and nr_origem_processo =0003
+		*/
+		
+		
+		int nr_sequencia = Integer.parseInt(numeroCnjDesformatado.substring(0,7));
+		int nr_digito_verificador = Integer.parseInt(numeroCnjDesformatado.substring(7,9));
+		int nr_ano =Integer.parseInt(numeroCnjDesformatado.substring(9,13));
+		int nr_origem_processo =Integer.parseInt(numeroCnjDesformatado.substring(16));
+		
+		String query = "select ul.ds_nome " +
+						" from pje.tb_processo_parte pp " +
+						" join pje.tb_usuario_login ul  on ul.id_usuario = pp.id_pessoa " +
+						" join pje.tb_processo_trf pr on pr.id_processo_trf=pp.id_processo_trf" +
+						"  where nr_sequencia=" + nr_sequencia +
+						" 	and nr_digito_verificador=" +nr_digito_verificador+
+						" 	and nr_ano=" +nr_ano+
+						" 	and nr_origem_processo =" + nr_origem_processo;
+		
+		executaBusca(query);
+		
+		ArrayList<String> lista =new  ArrayList<String>();
+		while (rs.next()) {
+			lista.add(rs.getString(1));			
+		}
+		return lista;		
+	}
 	
 	
 }

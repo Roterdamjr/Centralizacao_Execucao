@@ -1,11 +1,17 @@
 package teste;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import utilitarios.Utilitario;
 import modelo.Credito;
 import dao.CreditoDao;
+import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-		new TestaClasse().executa();		
+//		new TestaClasse().executa();
+		new TestaClasse().geraData();
 	}
 	
 	public void executa(){
@@ -36,4 +42,22 @@ public class TestaClasse {
 		
 		new CreditoDao().insereRegistro(credito);			
 	}
+	
+	public void geraDocumento(){
+		 Map<String, String> properties = new HashMap<String,String>();
+		 properties.put("P1", "0162000-57.2009.5.01.0040");
+		 properties.put("P2", "Wilson Maria dos Santos Filho");
+
+		 GeradorDeDocumento cd=new GeradorDeDocumento();
+		 try {
+			cd.preencheTemplate( "c:/temp/Certidao_saida.docx",properties);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void geraData(){
+		System.out.print(Utilitario.dataPorExtenso());
+	}
+	
 }

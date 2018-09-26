@@ -30,7 +30,7 @@ public class DaoBasePJe1G {
 	
 	protected ResultSet executaBusca(String query){
 
-		//System.out.println(query);
+		System.out.println(query);
 		PreparedStatement stmt;
 				
 		try {

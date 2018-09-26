@@ -9,37 +9,35 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import utilitarios.MesDoAno;
-import utilitarios.Util;
-import dao.EmpresaDao;
-import dao.TriagemDao;
-
-import javax.swing.SwingConstants;
-
 import modelo.Processo;
+import utilitarios.TipoPrioridade;
+import utilitarios.Utilitario;
+import dao.TriagemDao;
+import documento.GeradorDeDocumento;
 
 public class InternalFrameTriagem extends JInternalFrame {
-	//variavel poder passar aos parâmetros a referencia a este Frame
+	//passagem de prâmetros entre frames 
 	private InternalFrameTriagem esteFrame;
-	Processo processoRecebido;
-	
+	private Processo processoRecebido;
+	private String planoRecebido;
 	
 	private JPanel contentPane;
 	private JTable tabela;
@@ -53,10 +51,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JTextField txtProcesso;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private JTextField txtAnterioridade;
+	private JTextField txtDataAnterioridade;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JTextField txtValorPedido;
+	private JTextField txtValorDivida;
 	private JLabel lblNewLabel_5;
 	private JTextField txtLocalizacao;
 	private JTextField txtObservacao;
@@ -67,9 +65,9 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JPanel panel_22;
 	private JPanel panel_23;
 	private JButton btnSelecionarPlano;
-	private JLabel lblEmpresa;
+	private JLabel lblPlano;
 	private JPanel pnlTabela;
-	private JComboBox comboBox;
+	private JComboBox<String> cboPrioridade;
 	private JPanel panel;
 	private JPanel panel_4;
 	private JPanel panel_5;
@@ -79,6 +77,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JPanel panel_1;
 	private JPanel panel_3;
 	private JPanel panel_6;
+	private JButton btnGravar;
 
 	/**
 	 * Launch the application.
@@ -126,23 +125,23 @@ public class InternalFrameTriagem extends JInternalFrame {
 		lbl1 = new JLabel("Plano");
 		panel_4.add(lbl1);
 
-		lblEmpresa = new JLabel("New label");
-		panel_4.add(lblEmpresa);
-		lblEmpresa.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblEmpresa.setForeground(Color.RED);
+		lblPlano = new JLabel("New label");
+		panel_4.add(lblPlano);
+		lblPlano.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblPlano.setForeground(Color.RED);
 				
 		panel = new JPanel();
 		panel_22.add(panel, BorderLayout.EAST);
 
-		btnSelecionarPlano = new JButton("Plano");
+		btnSelecionarPlano = new JButton("Selecionar Plano     ");
 		panel.add(btnSelecionarPlano);
 		btnSelecionarPlano.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//selecionaProcesso(this);
+				selecionaPlano();
 			}
 		});
-		btnSelecionarPlano.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnSelecionarPlano.setForeground(Color.BLUE);
+		btnSelecionarPlano.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnSelecionarPlano.setForeground(Color.BLACK);
 
 		pnlInclusao = new JPanel();
 		panel_23.add(pnlInclusao);
@@ -159,7 +158,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		txtProcesso = new JTextField();
 		panel_1.add(txtProcesso);
-		txtProcesso.setColumns(10);
+		txtProcesso.setColumns(15);
 
 		lblSetor = new JLabel("Setor");
 		panel_1.add(lblSetor);
@@ -187,14 +186,14 @@ public class InternalFrameTriagem extends JInternalFrame {
 		panel_3 = new JPanel();
 		pnlInclusao.add(panel_3, BorderLayout.EAST);
 
-		btnProcesso = new JButton("Processo");
+		btnProcesso = new JButton("SelecionarProcesso");
 		btnProcesso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				selecionaProcesso();
 			}
 		});
-		btnProcesso.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnProcesso.setForeground(Color.BLUE);
+		btnProcesso.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnProcesso.setForeground(Color.BLACK);
 		panel_3.add(btnProcesso);
 
 		panel_5 = new JPanel();
@@ -217,25 +216,24 @@ public class InternalFrameTriagem extends JInternalFrame {
 		panel_6.add(lblNewLabel_1);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		txtAnterioridade = new JTextField();
-		panel_6.add(txtAnterioridade);
-		txtAnterioridade.setColumns(7);
+		txtDataAnterioridade = new JTextField();
+		panel_6.add(txtDataAnterioridade);
+		txtDataAnterioridade.setColumns(7);
 
 		lblNewLabel_2 = new JLabel("Prioridade");
 		panel_6.add(lblNewLabel_2);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		comboBox = new JComboBox();
-		panel_6.add(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"a", "b"}));
+		cboPrioridade = new JComboBox();
+		panel_6.add(cboPrioridade);
 
-		lblNewLabel_3 = new JLabel("Valor Pedido");
+		lblNewLabel_3 = new JLabel("Valor da D\u00EDvida");
 		panel_6.add(lblNewLabel_3);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		txtValorPedido = new JTextField();
-		panel_6.add(txtValorPedido);
-		txtValorPedido.setColumns(9);
+		txtValorDivida = new JTextField();
+		panel_6.add(txtValorDivida);
+		txtValorDivida.setColumns(9);
 
 		lblNewLabel_5 = new JLabel("Localiza\u00E7\u00E3o");
 		panel_6.add(lblNewLabel_5);
@@ -283,25 +281,92 @@ public class InternalFrameTriagem extends JInternalFrame {
 			}
 		});
 		panel_2.add(btnSair);
+		
+		btnGravar = new JButton("Gravar");
+		btnGravar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				gravarCredito();
+			}
+		});
+		btnGravar.setForeground(Color.BLUE);
+		btnGravar.setFont(new Font("Tahoma", Font.BOLD, 15));
+		panel_2.add(btnGravar);
 		/*
-		 * ======================================================= C´O D I G O P
-		 * P E R S O N A L I Z A D O
+		 * ======================================================= 
+		 * C´O D I G O P		 * P E R S O N A L I Z A D O
 		 * ======================================================
 		 */
-		setSize(1300, 800);
+		setSize(1400, 800);//larguraXaltura
 		esteFrame=this; 
+		populaComboPrioridade();
 		/* apos carregamento da janela */
-		// populaComboDeClassificacoes();
-	
+
+
+		preencheCamposParaTeste();
 
 	}
 
+	
+	private void populaComboPrioridade() {	
+		for(TipoPrioridade prioridade : TipoPrioridade.values()){
+			cboPrioridade.addItem((String)prioridade.getDescricao());
+		}
+	}
 
-	private void selecionaProcesso() {	
-		DialogLocalizarProcesso dialogo=new DialogLocalizarProcesso(esteFrame);
+	private void selecionaPlano() {
+		//passagem de prâmetros entre frames 
+		DialogSelecionarPlano dialogo=new DialogSelecionarPlano(esteFrame);
 		dialogo.setVisible(true);
-		System.out.println(processoRecebido.getNumCnj()+ processoRecebido.getExequente()+processoRecebido.getSetor()+processoRecebido.getDataDistribuicao());
 		
+		//carrega dados na tela
+		System.out.println("no retorno:"+planoRecebido);
+		lblPlano.setText(planoRecebido);
+	}
+	
+	private void selecionaProcesso() {	
+		//passagem de prâmetros entre frames 
+		DialogSelecionarProcesso dialogo=new DialogSelecionarProcesso(esteFrame);
+		dialogo.setVisible(true);
+		
+		//carrega dados na tela
+		txtProcesso.setText(processoRecebido.getNumCnj());
+		txtSetor.setText(processoRecebido.getSetor());	
+		txtExequente.setText(processoRecebido.getExequente());
+		txtDataDistribuicao.setText(processoRecebido.getDataDistribuicao());
+		
+		System.out.println("proc:"+processoRecebido.getNumCnj() +  "  exeq:"+processoRecebido.getExequente()+  
+				"  setor:"+ processoRecebido.getSetor()+ " data:"+processoRecebido.getDataDistribuicao());		
+	}
+	
+	private void gravarCredito() {
+		//popup de emissao de certidão
+		 if(JOptionPane.showConfirmDialog(null,"Imprimir Certidão", null,JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+			 String arquivoDestino=Utilitario.escolherArquivo();
+			 
+			 //preenche as propriedades
+			 Map<String, String> properties = new HashMap<String,String>();
+			 properties.put("#001#", txtProcesso.getText());
+			 properties.put("P2", txtExequente.getText());
+			 properties.put("P3", lblPlano.getText());
+			 properties.put("P4", txtSetor.getText());
+			 properties.put("P5", txtDataDistribuicao.getText());
+			 properties.put("P6", txtDataRecebimento.getText());
+			 properties.put("P7", txtDataAnterioridade.getText());
+			 properties.put("P8", txtValorDivida.getText());			 
+			 properties.put("P9", cboPrioridade.getSelectedItem().toString());
+			 //properties.put("P10", new GregorianCalendar().getTime().toString());
+			 
+			 //salva
+			 GeradorDeDocumento gerador=new GeradorDeDocumento();
+			 try {
+				 gerador.preencheTemplate(arquivoDestino,properties);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		 }
+
+		 
+		//grava no banco
 	}
 	
 	private void populaTabelaComDadosDoBanco() {
@@ -325,11 +390,19 @@ public class InternalFrameTriagem extends JInternalFrame {
 	};
 
 
+	public void recebePlanoDoDialog(String plano){
+		//passagem de prâmetros entre frames
+		planoRecebido=plano;
+		lblPlano.setText(plano);
+		System.out.println("retorno " +plano);
+	}
 	
 	public void recebeProcessoDoDialog(Processo proc){
+		//passagem de prâmetros entre frames
 		processoRecebido=proc;
 	}
 
+	
 	private void fechaFrame() {	
 	  	this.doDefaultCloseAction();
 	}
@@ -338,4 +411,13 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 	}
 
+	private void preencheCamposParaTeste(){
+		txtDataRecebimento.setText("30/05/2018");
+		txtDataAnterioridade.setText("18/01/2012");
+		cboPrioridade.setSelectedItem("Verbas rescisórias");
+		txtValorDivida.setText("69.033,65");
+		txtLocalizacao.setText("Gaveta A");
+		txtObservacao.setText("Pagar logo");
+	
+	}
 }

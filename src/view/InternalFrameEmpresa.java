@@ -24,8 +24,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import utilitarios.Util;
-import dao.EmpresaDao;
+import utilitarios.Utilitario;
+import dao.PlanoExecucaoDao;
 import dao.TriagemDao;
 
 import javax.swing.SwingConstants;
@@ -245,7 +245,7 @@ public class InternalFrameEmpresa extends JInternalFrame {
 
 	private void populaTabelaComDadosDoBanco() {
 
-		ResultSet rs = new EmpresaDao().buscaTodosComResultset();
+		ResultSet rs = new PlanoExecucaoDao().buscaTodosComResultset();
 
 		try {
 			int columns = rs.getMetaData().getColumnCount();
@@ -264,7 +264,7 @@ public class InternalFrameEmpresa extends JInternalFrame {
 	}
 
 	private void habilitaInclusao() {
-		Util.bloquearLiberarCampos2Niveis(pnlInclusao, true);
+		Utilitario.bloquearLiberarCampos2Niveis(pnlInclusao, true);
 
 		tabela.setEnabled(false);
 		btnIncluir.setEnabled(true);
@@ -272,7 +272,7 @@ public class InternalFrameEmpresa extends JInternalFrame {
 	}
 
 	private void habilitaSelecao() {
-		Util.bloquearLiberarCampos2Niveis(pnlInclusao, false);
+		Utilitario.bloquearLiberarCampos2Niveis(pnlInclusao, false);
 		tabela.setEnabled(true);
 		btnIncluir.setEnabled(false);
 		btnExcluir.setEnabled(true);

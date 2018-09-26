@@ -12,25 +12,25 @@ public enum TipoPrioridade {
 	DGR ("Doença Grave"),
 	S60 ("Até 60 S.M");
 	
-	private String tipoPreferenciaExtenso;
+	private String descricao;
 
-	private TipoPrioridade(String tipoPreferenciaExtenso){
-		 this.tipoPreferenciaExtenso=tipoPreferenciaExtenso;
+	private TipoPrioridade(String descricao){
+		 this.descricao=descricao;
 	 }
 	
-	 public String getTipoPreferenciaExtenso(){
-		 return this.tipoPreferenciaExtenso;
+	 public String getDescricao(){
+		 return this.descricao;
 	 }
 	 
 	 public String toString() {
-		 return tipoPreferenciaExtenso;
+		 return descricao;
 	 }
 	 
 	 public static String[] valores(){
 		String[]  values = new String[7]; //--> tamanho da enumeração
 		int i=0;
 		for(TipoPrioridade op : TipoPrioridade.values()){
-			values[i]=op.getTipoPreferenciaExtenso();
+			values[i]=op.getDescricao();
 			i++;
 		}
 		return values;
