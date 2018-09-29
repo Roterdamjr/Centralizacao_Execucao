@@ -15,7 +15,7 @@ public class PlanoExecucaoDao extends DaoBase{
 		List<String> lista = new ArrayList<String>();
 		String obj;
 		
-		String query = "select NOME_EMPRESA from TB_PLANO_EXECUCAO t1";		
+		String query = "select ID_PLANO_EXECUCAO,NOME_EMPRESA from TB_PLANO_EXECUCAO t1";		
 		
 		executaBusca(query);
 
@@ -34,7 +34,7 @@ public class PlanoExecucaoDao extends DaoBase{
 	
 	public ResultSet buscaTodosComResultset(){
 		
-		String query = "select NOME_EMPRESA,deposito_mensal from TB_PLANO_EXECUCAO t1";		
+		String query = "select ID_PLANO_EXECUCAO,NOME_EMPRESA,deposito_mensal from TB_PLANO_EXECUCAO t1";		
 		
 		return executaBusca(query);
 

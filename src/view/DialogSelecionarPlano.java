@@ -2,6 +2,9 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 
 import javax.swing.JButton;
@@ -12,10 +15,8 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import modelo.Processo;
+import modelo.PlanoDeExecucao;
 import dao.PlanoExecucaoDao;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DialogSelecionarPlano extends JDialog {
 
@@ -52,13 +53,13 @@ public class DialogSelecionarPlano extends JDialog {
 
 		tabela = new JTable();
 		tabela.setModel(new DefaultTableModel(
-				new Object[][] {
-						{null},
-				},
-				new String[] {
-						"Planos de Execu\u00E7\u00E3o"
-				}
-				));
+			new Object[][] {
+				{null, null},
+			},
+			new String[] {
+				"id_plano", "Empresa"
+			}
+		));
 		contentPanel.add(tabela);
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		contentPanel.add(scrollPane);
@@ -93,6 +94,10 @@ public class DialogSelecionarPlano extends JDialog {
 		//tabela.getModel().isCellEditable(false);
 		populaTabelaComDadosDoBanco();
 		
+		//esconde coluna com os Ids
+		tabela.getColumnModel().getColumn(0).setMinWidth(0);
+		tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+		
 		//passagem de prâmetros entre frames
 		this.framePrincipal=framePrincipal;
 
@@ -118,11 +123,19 @@ public class DialogSelecionarPlano extends JDialog {
 	};
 	
 	private void retornarDados(){	
-		String texto=(String)tabela.getModel().getValueAt(  tabela.getSelectedRow() ,0);
-		//seta no frame chamador o processo
-		framePrincipal.recebePlanoDoDialog(texto);
+		PlanoDeExecucao plano =new PlanoDeExecucao();
 		
-		System.out.println("selecao da dialog "+texto);
+		String empresa=(String)tabela.getModel().getValueAt(  tabela.getSelectedRow() ,1);
+		BigDecimal id_plano= (BigDecimal)tabela.getModel().getValueAt(  tabela.getSelectedRow() ,0);
+		System.out.println("tipo "+id_plano.getClass());
+		
+		plano.setIdPlano(id_plano.intValue());
+		plano.setNomeEmpresa(empresa);
+		
+		//seta no frame chamador o processo
+		framePrincipal.recebePlanoDoDialog(plano);
+		
+		System.out.println("empresa "+empresa + "id retornado"+ plano.getIdPlano());
 		dispose();
 	}
 }

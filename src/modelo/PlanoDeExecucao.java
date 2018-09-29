@@ -1,6 +1,8 @@
 package modelo;
 
 public class PlanoDeExecucao {
+	
+	private int idPlano;
 	private String nomeEmpresa;
 	private String cnpj;
 	private String depositoMensal;
@@ -35,6 +37,12 @@ public class PlanoDeExecucao {
 	}
 	public void setDataDeferimento(String dataDeferimento) {
 		this.dataDeferimento = dataDeferimento;
+	}
+	public int getIdPlano() {
+		return idPlano;
+	}
+	public void setIdPlano(int idPlano) {
+		this.idPlano = idPlano;
 	}
 	
 	

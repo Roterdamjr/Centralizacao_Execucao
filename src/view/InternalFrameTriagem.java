@@ -27,9 +27,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Credito;
+import modelo.PlanoDeExecucao;
 import modelo.Processo;
 import utilitarios.TipoPrioridade;
 import utilitarios.Utilitario;
+import dao.CreditoDao;
 import dao.TriagemDao;
 import documento.GeradorDeDocumento;
 
@@ -37,7 +40,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 	//passagem de prâmetros entre frames 
 	private InternalFrameTriagem esteFrame;
 	private Processo processoRecebido;
-	private String planoRecebido;
+	private PlanoDeExecucao planoRecebido;
 	
 	private JPanel contentPane;
 	private JTable tabela;
@@ -125,7 +128,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 		lbl1 = new JLabel("Plano");
 		panel_4.add(lbl1);
 
-		lblPlano = new JLabel("New label");
+		lblPlano = new JLabel("");
 		panel_4.add(lblPlano);
 		lblPlano.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblPlano.setForeground(Color.RED);
@@ -319,8 +322,8 @@ public class InternalFrameTriagem extends JInternalFrame {
 		dialogo.setVisible(true);
 		
 		//carrega dados na tela
-		System.out.println("no retorno:"+planoRecebido);
-		lblPlano.setText(planoRecebido);
+		//System.out.println("no retorno:"+planoRecebido);
+		lblPlano.setText(planoRecebido.getNomeEmpresa());
 	}
 	
 	private void selecionaProcesso() {	
@@ -364,9 +367,26 @@ public class InternalFrameTriagem extends JInternalFrame {
 				e.printStackTrace();
 			}
 		 }
-
 		 
 		//grava no banco
+		 Credito credito = new Credito();
+		 credito.setDataAnterioridade(txtDataAnterioridade.getText());
+		 credito.setDataDistribuicao(txtDataDistribuicao.getText());
+		 credito.setDataRecebimento(txtDataRecebimento.getText());
+		 credito.setId_plano_execucao(planoRecebido.getIdPlano());
+		 String in_prioridadade=TipoPrioridade.retornaChave((String)cboPrioridade.getSelectedItem());		
+		 credito.setIn_prioridadade(in_prioridadade);
+		 
+		 
+		 credito.setLocalizacao(txtLocalizacao.getText());
+		 credito.setNomeExequente(txtExequente.getText());
+		 credito.setObservacao(txtObservacao.getText());
+		 credito.setProcesso(txtProcesso.getText());
+		 credito.setSetor(txtSetor.getText());
+		 credito.setValorDoPedido(txtValorDivida.getText());
+
+		 new CreditoDao().insereRegistro(credito);
+		 
 	}
 	
 	private void populaTabelaComDadosDoBanco() {
@@ -390,10 +410,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 	};
 
 
-	public void recebePlanoDoDialog(String plano){
+	public void recebePlanoDoDialog(PlanoDeExecucao plano){
 		//passagem de prâmetros entre frames
 		planoRecebido=plano;
-		lblPlano.setText(plano);
+		lblPlano.setText(plano.getNomeEmpresa());
 		System.out.println("retorno " +plano);
 	}
 	

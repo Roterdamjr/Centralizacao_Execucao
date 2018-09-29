@@ -4,17 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utilitarios.Utilitario;
+import view.DialogSelecionarPlano;
 import modelo.Credito;
 import dao.CreditoDao;
 import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-//		new TestaClasse().executa();
-		new TestaClasse().geraData();
+		new TestaClasse().executa();
+//		new TestaClasse().geraData();
 	}
 	
-	public void executa(){
+/*	public void executa(){
 		String id_plano_execucao="4";
 		String		dataRecebimento="30/05/2018";
 		String		setor ="40 VT/RJ" ;	
@@ -41,6 +42,16 @@ public class TestaClasse {
 		credito.setObservacao(observacao) ;
 		
 		new CreditoDao().insereRegistro(credito);			
+	}*/
+	
+	private void executa() {
+		//passagem de prâmetros entre frames 
+		DialogSelecionarPlano dialogo=new DialogSelecionarPlano(null);
+		dialogo.setVisible(true);
+		
+		//carrega dados na tela
+/*		System.out.println("no retorno:"+planoRecebido);
+		lblPlano.setText(planoRecebido);*/
 	}
 	
 	public void geraDocumento(){
