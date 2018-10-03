@@ -1,17 +1,17 @@
 package teste;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import utilitarios.Utilitario;
 import view.DialogSelecionarPlano;
-import modelo.Credito;
-import dao.CreditoDao;
+import dao.PlanoExecucaoDao;
 import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-		new TestaClasse().executa();
+		new TestaClasse().banco();
 //		new TestaClasse().geraData();
 	}
 	
@@ -43,6 +43,11 @@ public class TestaClasse {
 		
 		new CreditoDao().insereRegistro(credito);			
 	}*/
+	
+	private void banco() {
+		List lista = new PlanoExecucaoDao().buscaTodos();
+		
+	}
 	
 	private void executa() {
 		//passagem de prâmetros entre frames 

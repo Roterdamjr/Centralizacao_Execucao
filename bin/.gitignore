@@ -1,9 +1,8 @@
-/celio$1.class
-/celio.class
+/util
+/view
 /dao
+/documento
 /jdbc
 /modelo
 /teste
-/util
 /utilitarios
-/view

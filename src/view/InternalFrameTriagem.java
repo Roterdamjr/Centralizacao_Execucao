@@ -106,7 +106,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		textField_11.setColumns(10);
 		setFont(new Font("Dialog", Font.PLAIN, 16));
-		setTitle("Triagem");
+		setTitle("Triagem versao 0.14");
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -305,7 +305,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 		/* apos carregamento da janela */
 
 
-		preencheCamposParaTeste();
+		//preencheCamposParaTeste();
 
 	}
 

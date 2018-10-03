@@ -12,24 +12,26 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
+import modelo.Processo;
 import dao.ProcessoPJe1GDao;
 import dao.ProcessoSapwebDao;
-import modelo.Processo;
 
 public class DialogSelecionarProcesso extends JDialog {
 	
 	//passagem de prâmetros entre frames
 	private InternalFrameTriagem framePrincipal;
-		
+	private JFormattedTextField fmtProcesso;		
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtProcesso;
 	private JLabel lblSetor,lblDataDistribuicao,lblExequente, lblSistema;	
 	private JComboBox<String> cboPartes;
+
 	/**
 	 * Launch the application.
 	 */
@@ -64,9 +66,9 @@ public class DialogSelecionarProcesso extends JDialog {
 				panel.add(lblNewLabel);
 			}
 			{
-				txtProcesso = new JTextField();
-				panel.add(txtProcesso);
-				txtProcesso.setColumns(20);
+				fmtProcesso = new JFormattedTextField( formataProcesso());
+				fmtProcesso.setColumns(20);
+				panel.add(fmtProcesso);
 			}
 			{
 				JButton btnNewButton = new JButton("Selecionar");
@@ -165,12 +167,12 @@ public class DialogSelecionarProcesso extends JDialog {
 		
 		//passagem de prâmetros entre frames
 		this.framePrincipal=framePrincipal;
-		preencheCamposParaTeste();
+		//preencheCamposParaTeste();
 	}
 	
 	private void preencheCamposParaTeste(){
-		//txtProcesso.setText("0162000-57.2009.5.01.0040");//sapweb
-		txtProcesso.setText("0101921-48.2017.5.01.0003");//pje1g
+		//fmtProcesso.setText("0101921-48.2017.5.01.0003");//pje1g
+		fmtProcesso.setText("0162000-57.2009.5.01.0040");//sapweb
 		
 		lblSetor.setText("");
 		lblDataDistribuicao.setText("");
@@ -184,11 +186,11 @@ public class DialogSelecionarProcesso extends JDialog {
 		
 		try {
 			//busca dados no banco sapweb
-			processo = new ProcessoSapwebDao().buscaDados(txtProcesso.getText());			
+			processo = new ProcessoSapwebDao().buscaDados(fmtProcesso.getText());			
 						
 			//se não achou busca no PJe1G
 			if (processo==null){			
-				processo = new ProcessoPJe1GDao().buscaDados(txtProcesso.getText());
+				processo = new ProcessoPJe1GDao().buscaDados(fmtProcesso.getText());
 			}			
 			
 			//preenche dados na tela
@@ -209,7 +211,7 @@ public class DialogSelecionarProcesso extends JDialog {
 	private void retornarDados(){
 		
 		Processo obj =new Processo();
-		obj.setNumCnj(txtProcesso.getText());
+		obj.setNumCnj(fmtProcesso.getText());
 		obj.setExequente((String)cboPartes.getSelectedItem());
 		obj.setSetor(lblSetor.getText());
 		obj.setDataDistribuicao(lblDataDistribuicao.getText());
@@ -221,4 +223,16 @@ public class DialogSelecionarProcesso extends JDialog {
 		dispose();
 	}
 
+	private MaskFormatter formataProcesso(){
+		MaskFormatter mascaraProcesso=null;
+		
+		try{
+			mascaraProcesso = new MaskFormatter("#######-##.####.5.01.####");
+			mascaraProcesso.setValidCharacters("0123456789");
+		}catch (Exception e){
+		}
+		return mascaraProcesso;
+		
+	}
+	
 }

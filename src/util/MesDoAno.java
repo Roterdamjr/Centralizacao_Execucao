@@ -1,5 +1,7 @@
 package util;
 
+
+
 public enum MesDoAno {
 	JANEIRO 	("Janeiro"),
 	FEVEREIRO	("Fevereiro"),
@@ -25,8 +27,14 @@ public enum MesDoAno {
 		 return this.mesExtenso;
 	 }
 	 
-	 public String toString() {
-		 return mesExtenso;
+	 public static MesDoAno getNomeConstante(String descricao){
+		 MesDoAno ret=null;
+		 
+		 for(MesDoAno mes:MesDoAno.values()){
+			 if(descricao.equals(mes.getMesExtenso()))
+				 ret=mes;		
+		 }
+		 return ret;
 	 }
 	 
 }

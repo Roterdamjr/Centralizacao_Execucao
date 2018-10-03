@@ -24,7 +24,7 @@ public class FabricaDeConexaoPJe1G {
 		} 
 		
 		try{
-			return DriverManager.getConnection("jdbc:postgresql://10.1.75.59:5433/eg_1grau",	"postgres","pje123456");
+			return DriverManager.getConnection("jdbc:postgresql://10.1.71.6:5432/pje_1grau_producao",	"relat_secaad","a5h8F2_d9Y");
 			//return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"app","app");
 					
 

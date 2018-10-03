@@ -1,7 +1,5 @@
 package util;
 
-import java.lang.Thread.State;
-
 public enum TipoPreferencia {
 	
 	A80 ("Acima 80 anos"),
@@ -13,7 +11,7 @@ public enum TipoPreferencia {
 	S60 ("Até 60 S.M");
 	
 	private String tipoPreferenciaExtenso;
-
+	//contrutor privado obrigatório
 	private TipoPreferencia(String tipoPreferenciaExtenso){
 		 this.tipoPreferenciaExtenso=tipoPreferenciaExtenso;
 	 }
@@ -22,11 +20,17 @@ public enum TipoPreferencia {
 		 return this.tipoPreferenciaExtenso;
 	 }
 	 
-	 public String toString() {
-		 return tipoPreferenciaExtenso;
+	 public static TipoPreferencia getNomeConstante(String descricao){
+		 TipoPreferencia ret=null;
+
+		 for(TipoPreferencia obj:TipoPreferencia.values()){
+			 if(descricao.equals(obj.getTipoPreferenciaExtenso()))
+				 ret=obj;		
+		 }
+		 return ret;
 	 }
 	 
-	 public static String[] valores(){
+/*	 public static String[] valores(){
 		String[]  values = new String[7]; //--> tamanho da enumeração
 		int i=0;
 		for(TipoPreferencia op : TipoPreferencia.values()){
@@ -34,5 +38,5 @@ public enum TipoPreferencia {
 			i++;
 		}
 		return values;
-	 }
+	 }*/
 }
