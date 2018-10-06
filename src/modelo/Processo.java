@@ -7,9 +7,22 @@ public class Processo {
 	private String setor;
 	private String  exequente;
 	private String dataDistribuicao;
-	private ArrayList<String> partes;
+	private ArrayList<Parte> partes= new  ArrayList<Parte>();
+	private ArrayList<Advogado> advogados= new  ArrayList<Advogado>();
 	private String siglaSetor;
 	private String sistemaOrigem;
+	 
+	public void addParte(Parte parte){
+		partes.add(parte);
+	}
+	
+	public ArrayList<Advogado> getAdvogados() {
+		return advogados;
+	}
+
+	public void addAdvogado(Advogado advogado){
+		advogados.add(advogado);
+	}
 	
 	public String getSistemaOrigem() {
 		return sistemaOrigem;
@@ -41,12 +54,13 @@ public class Processo {
 	public void setDataDistribuicao(String dataDistribuicao) {
 		this.dataDistribuicao = dataDistribuicao;
 	}
-	public ArrayList<String> getPartes() {
+	public ArrayList<Parte> getPartes() {
 		return partes;
 	}
-	public void setPartes(ArrayList<String> partes) {
+/*	public void setPartes(ArrayList<Parte> partes) {
 		this.partes = partes;
 	}
+	*/
 	public String getSiglaSetor() {
 		return siglaSetor;
 	}

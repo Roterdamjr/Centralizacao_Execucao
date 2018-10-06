@@ -52,14 +52,23 @@ public class DialogSelecionarPlano extends JDialog {
 
 
 		tabela = new JTable();
-		tabela.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-			},
-			new String[] {
-				"id_plano", "Empresa"
-			}
-		));
+		
+		DefaultTableModel modelo = new DefaultTableModel(
+			new Object[][] {{null, null},},
+			new String[] {"id_plano", "Empresa"	}
+		)
+		//impede que jtable seja editável
+		{ 
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int col) 
+			{ 
+				return false; 
+			} 
+		};
+		
+		tabela.setModel(modelo);
+		
 		contentPanel.add(tabela);
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		contentPanel.add(scrollPane);

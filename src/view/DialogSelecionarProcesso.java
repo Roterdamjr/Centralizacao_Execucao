@@ -15,11 +15,11 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
 
+import modelo.Parte;
 import modelo.Processo;
+import utilitarios.Utilitario;
 import dao.ProcessoPJe1GDao;
 import dao.ProcessoSapwebDao;
 
@@ -31,7 +31,7 @@ public class DialogSelecionarProcesso extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JLabel lblSetor,lblDataDistribuicao,lblExequente, lblSistema;	
 	private JComboBox<String> cboPartes;
-
+	JButton btnNewButton;
 	/**
 	 * Launch the application.
 	 */
@@ -66,12 +66,12 @@ public class DialogSelecionarProcesso extends JDialog {
 				panel.add(lblNewLabel);
 			}
 			{
-				fmtProcesso = new JFormattedTextField( formataProcesso());
+				fmtProcesso = new JFormattedTextField( Utilitario.buscaMascaraProcesso());
 				fmtProcesso.setColumns(20);
 				panel.add(fmtProcesso);
 			}
 			{
-				JButton btnNewButton = new JButton("Selecionar");
+				btnNewButton = new JButton("Selecionar");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						exibeDadosDeProcesso();
@@ -167,16 +167,10 @@ public class DialogSelecionarProcesso extends JDialog {
 		
 		//passagem de prâmetros entre frames
 		this.framePrincipal=framePrincipal;
-		//preencheCamposParaTeste();
+		preencheCamposParaTeste();
 	}
 	
-	private void preencheCamposParaTeste(){
-		//fmtProcesso.setText("0101921-48.2017.5.01.0003");//pje1g
-		fmtProcesso.setText("0162000-57.2009.5.01.0040");//sapweb
-		
-		lblSetor.setText("");
-		lblDataDistribuicao.setText("");
-	}
+
 	private void exibeDadosDeProcesso(){
 		
 		Processo processo;
@@ -197,10 +191,10 @@ public class DialogSelecionarProcesso extends JDialog {
 			lblSetor.setText(processo.getSiglaSetor());
 			lblDataDistribuicao.setText(processo.getDataDistribuicao());
 			lblSistema.setText(processo.getSistemaOrigem());		
-			ArrayList<String> partes=processo.getPartes();
+			ArrayList<Parte> partes=processo.getPartes();
 
-			for(String nome:partes){
-				cboPartes.addItem((String)nome);
+			for(Parte pte:partes){
+				cboPartes.addItem(pte.getNome());
 			}
 			
 		} catch (Exception e) {
@@ -223,16 +217,11 @@ public class DialogSelecionarProcesso extends JDialog {
 		dispose();
 	}
 
-	private MaskFormatter formataProcesso(){
-		MaskFormatter mascaraProcesso=null;
-		
-		try{
-			mascaraProcesso = new MaskFormatter("#######-##.####.5.01.####");
-			mascaraProcesso.setValidCharacters("0123456789");
-		}catch (Exception e){
-		}
-		return mascaraProcesso;
-		
+	private void preencheCamposParaTeste(){
+		//fmtProcesso.setText("0101921-48.2017.5.01.0003");//pje1g
+		fmtProcesso.setText("0162000-57.2009.5.01.0040");//sapweb		
+		lblSetor.setText("");
+		lblDataDistribuicao.setText("");
 	}
 	
 }

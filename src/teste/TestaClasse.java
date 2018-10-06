@@ -11,7 +11,7 @@ import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-		new TestaClasse().banco();
+		new TestaClasse().selecionaPlano();
 //		new TestaClasse().geraData();
 	}
 	
@@ -49,7 +49,7 @@ public class TestaClasse {
 		
 	}
 	
-	private void executa() {
+	private void selecionaPlano() {
 		//passagem de prâmetros entre frames 
 		DialogSelecionarPlano dialogo=new DialogSelecionarPlano(null);
 		dialogo.setVisible(true);

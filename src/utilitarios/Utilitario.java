@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.MaskFormatter;
 
 public class Utilitario {
 	
@@ -100,6 +101,58 @@ public class Utilitario {
     	return sDia+" " +sMes;
     }
     
+    public static MaskFormatter buscaMascaraProcesso(){
+		MaskFormatter mascaraProcesso=null;
+		
+		try{
+			mascaraProcesso = new MaskFormatter("#######-##.####.5.01.####");
+			mascaraProcesso.setValidCharacters("0123456789");
+		}catch (Exception e){
+			System.out.println("Máscara de processo inválida!");
+		}
+		return mascaraProcesso;		
+	}    
+
     
-	
+    public static MaskFormatter buscaMascaraData(){
+		MaskFormatter mascaraProcesso=null;
+		
+		try{
+			mascaraProcesso = new MaskFormatter("##/##/####");
+			mascaraProcesso.setValidCharacters("0123456789");
+		}catch (Exception e){
+			System.out.println("Máscara de data inválida!");
+		}
+		return mascaraProcesso;		
+	}
+    
+    public static MaskFormatter buscaMascaraValor(){
+		MaskFormatter mascaraProcesso=null;
+		
+		try{
+			mascaraProcesso = new MaskFormatter("###.###.###,##");
+			mascaraProcesso.setValidCharacters("0123456789");
+		}catch (Exception e){
+			System.out.println("Máscara de data inválida!");
+		}
+		return mascaraProcesso;		
+	}
+    
+    public static boolean isDataValida(String dataTexto){
+    	
+    	boolean isValida=true;
+    	
+    	Date data = null;
+
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	try {
+    		format.setLenient(false);
+    		data = format.parse(dataTexto);
+    	} 
+    	catch (ParseException e) {
+    		isValida=false;
+    	}
+    	return isValida;
+    	
+    }
 }

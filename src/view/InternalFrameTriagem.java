@@ -30,11 +30,14 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Credito;
 import modelo.PlanoDeExecucao;
 import modelo.Processo;
+
 import utilitarios.TipoPrioridade;
 import utilitarios.Utilitario;
 import dao.CreditoDao;
 import dao.TriagemDao;
 import documento.GeradorDeDocumento;
+
+import javax.swing.JFormattedTextField;
 
 public class InternalFrameTriagem extends JInternalFrame {
 	//passagem de prâmetros entre frames 
@@ -49,15 +52,11 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JLabel lblSetor;
 	private JTextField txtSetor;
 	private JLabel lblDataRecebimento;
-	private JTextField txtDataRecebimento;
 	private JLabel lblProcesso;
-	private JTextField txtProcesso;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private JTextField txtDataAnterioridade;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JTextField txtValorDivida;
 	private JLabel lblNewLabel_5;
 	private JTextField txtLocalizacao;
 	private JTextField txtObservacao;
@@ -65,7 +64,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JLabel lblObservao;
 	private JPanel pnlInclusao;
 	private JTextField txtExequente;
-	private JPanel panel_22;
+	private JPanel pnlPlano;
 	private JPanel panel_23;
 	private JButton btnSelecionarPlano;
 	private JLabel lblPlano;
@@ -73,14 +72,18 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private JComboBox<String> cboPrioridade;
 	private JPanel panel;
 	private JPanel panel_4;
-	private JPanel panel_5;
+	private JPanel pnlIncl;
 	private JLabel lblNewLabel_4;
-	private JTextField txtDataDistribuicao;
 	private JButton btnProcesso;
 	private JPanel panel_1;
 	private JPanel panel_3;
 	private JPanel panel_6;
 	private JButton btnGravar;
+	private JFormattedTextField fmtProcesso;
+	private JFormattedTextField fmtDataDistribuicao;
+	private JFormattedTextField fmtDataRecebimento;
+	private JFormattedTextField fmtDataAnterioridade;
+	private JFormattedTextField fmtValorDivida;
 
 	/**
 	 * Launch the application.
@@ -117,24 +120,24 @@ public class InternalFrameTriagem extends JInternalFrame {
 		contentPane.add(panel_23, BorderLayout.NORTH);
 		panel_23.setLayout(new GridLayout(3, 1, 0, 0));
 
-		panel_22 = new JPanel();
-		panel_22.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_23.add(panel_22);
-		panel_22.setLayout(new BorderLayout(0, 0));
+		pnlPlano = new JPanel();
+		pnlPlano.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_23.add(pnlPlano);
+		pnlPlano.setLayout(new BorderLayout(0, 0));
 		
 		panel_4 = new JPanel();
-		panel_22.add(panel_4, BorderLayout.WEST);
+		pnlPlano.add(panel_4, BorderLayout.WEST);
 
 		lbl1 = new JLabel("Plano");
 		panel_4.add(lbl1);
 
-		lblPlano = new JLabel("");
+		lblPlano = new JLabel("Plano");
 		panel_4.add(lblPlano);
 		lblPlano.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblPlano.setForeground(Color.RED);
 				
 		panel = new JPanel();
-		panel_22.add(panel, BorderLayout.EAST);
+		pnlPlano.add(panel, BorderLayout.EAST);
 
 		btnSelecionarPlano = new JButton("Selecionar Plano     ");
 		panel.add(btnSelecionarPlano);
@@ -158,10 +161,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 		lblProcesso = new JLabel("Processo");
 		panel_1.add(lblProcesso);
 		lblProcesso.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		txtProcesso = new JTextField();
-		panel_1.add(txtProcesso);
-		txtProcesso.setColumns(15);
+		
+		fmtProcesso = new JFormattedTextField(Utilitario.buscaMascaraProcesso());
+		fmtProcesso.setColumns(15);
+		panel_1.add(fmtProcesso);
 
 		lblSetor = new JLabel("Setor");
 		panel_1.add(lblSetor);
@@ -181,10 +184,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		lblNewLabel_4 = new JLabel("Data Distribui\u00E7\u00E3o");
 		panel_1.add(lblNewLabel_4);
-
-		txtDataDistribuicao = new JTextField();
-		panel_1.add(txtDataDistribuicao);
-		txtDataDistribuicao.setColumns(7);
+		
+		fmtDataDistribuicao = new JFormattedTextField(Utilitario.buscaMascaraData());
+		fmtDataDistribuicao.setColumns(7);
+		panel_1.add(fmtDataDistribuicao);
 
 		panel_3 = new JPanel();
 		pnlInclusao.add(panel_3, BorderLayout.EAST);
@@ -199,29 +202,29 @@ public class InternalFrameTriagem extends JInternalFrame {
 		btnProcesso.setForeground(Color.BLACK);
 		panel_3.add(btnProcesso);
 
-		panel_5 = new JPanel();
-		panel_23.add(panel_5);
-		panel_5.setLayout(new BorderLayout(0, 0));
+		pnlIncl = new JPanel();
+		panel_23.add(pnlIncl);
+		pnlIncl.setLayout(new BorderLayout(0, 0));
 
 		panel_6 = new JPanel();
-		panel_5.add(panel_6, BorderLayout.CENTER);
+		pnlIncl.add(panel_6, BorderLayout.CENTER);
 		panel_6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 		lblDataRecebimento = new JLabel("Data Recebimento");
 		panel_6.add(lblDataRecebimento);
 		lblDataRecebimento.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		txtDataRecebimento = new JTextField();
-		panel_6.add(txtDataRecebimento);
-		txtDataRecebimento.setColumns(7);
+		
+		fmtDataRecebimento = new JFormattedTextField(Utilitario.buscaMascaraData());
+		fmtDataRecebimento.setColumns(7);
+		panel_6.add(fmtDataRecebimento);
 
 		lblNewLabel_1 = new JLabel("Anterioridade");
 		panel_6.add(lblNewLabel_1);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		txtDataAnterioridade = new JTextField();
-		panel_6.add(txtDataAnterioridade);
-		txtDataAnterioridade.setColumns(7);
+		
+		fmtDataAnterioridade = new JFormattedTextField(Utilitario.buscaMascaraData());
+		fmtDataAnterioridade.setColumns(7);
+		panel_6.add(fmtDataAnterioridade);
 
 		lblNewLabel_2 = new JLabel("Prioridade");
 		panel_6.add(lblNewLabel_2);
@@ -233,10 +236,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 		lblNewLabel_3 = new JLabel("Valor da D\u00EDvida");
 		panel_6.add(lblNewLabel_3);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		txtValorDivida = new JTextField();
-		panel_6.add(txtValorDivida);
-		txtValorDivida.setColumns(9);
+		
+		fmtValorDivida = new JFormattedTextField(Utilitario.buscaMascaraValor());
+		fmtValorDivida.setColumns(10);
+		panel_6.add(fmtValorDivida);
 
 		lblNewLabel_5 = new JLabel("Localiza\u00E7\u00E3o");
 		panel_6.add(lblNewLabel_5);
@@ -252,7 +255,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 
 		txtObservacao = new JTextField();
 		panel_6.add(txtObservacao);
-		txtObservacao.setColumns(20);
+		txtObservacao.setColumns(10);
 
 		pnlTabela = new JPanel();
 		pnlTabela.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -288,7 +291,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 		btnGravar = new JButton("Gravar");
 		btnGravar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gravarCredito();
+				solicitarGravacao();
 			}
 		});
 		btnGravar.setForeground(Color.BLUE);
@@ -302,6 +305,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 		setSize(1400, 800);//larguraXaltura
 		esteFrame=this; 
 		populaComboPrioridade();
+		lblPlano.setText(null);
 		/* apos carregamento da janela */
 
 
@@ -314,6 +318,8 @@ public class InternalFrameTriagem extends JInternalFrame {
 		for(TipoPrioridade prioridade : TipoPrioridade.values()){
 			cboPrioridade.addItem((String)prioridade.getDescricao());
 		}
+		//posiciona primeira opção
+		cboPrioridade.setSelectedIndex(0);
 	}
 
 	private void selecionaPlano() {
@@ -323,7 +329,10 @@ public class InternalFrameTriagem extends JInternalFrame {
 		
 		//carrega dados na tela
 		//System.out.println("no retorno:"+planoRecebido);
-		lblPlano.setText(planoRecebido.getNomeEmpresa());
+		if(planoRecebido!=null){
+			//evita erro na thread apenas
+			lblPlano.setText(planoRecebido.getNomeEmpresa());
+		}
 	}
 	
 	private void selecionaProcesso() {	
@@ -332,30 +341,39 @@ public class InternalFrameTriagem extends JInternalFrame {
 		dialogo.setVisible(true);
 		
 		//carrega dados na tela
-		txtProcesso.setText(processoRecebido.getNumCnj());
-		txtSetor.setText(processoRecebido.getSetor());	
-		txtExequente.setText(processoRecebido.getExequente());
-		txtDataDistribuicao.setText(processoRecebido.getDataDistribuicao());
-		
-		System.out.println("proc:"+processoRecebido.getNumCnj() +  "  exeq:"+processoRecebido.getExequente()+  
-				"  setor:"+ processoRecebido.getSetor()+ " data:"+processoRecebido.getDataDistribuicao());		
+		if(processoRecebido!=null){
+			fmtProcesso.setText(processoRecebido.getNumCnj());
+			txtSetor.setText(processoRecebido.getSetor());	
+			txtExequente.setText(processoRecebido.getExequente());
+			fmtDataDistribuicao.setText(processoRecebido.getDataDistribuicao());
+			
+			System.out.println("proc:"+processoRecebido.getNumCnj() +  "  exeq:"+processoRecebido.getExequente()+  
+					"  setor:"+ processoRecebido.getSetor()+ " data:"+processoRecebido.getDataDistribuicao());
+		}
+	}	
+	
+	private void solicitarGravacao() {
+		if(isDadosValidos()){			
+			facultarEmissaoCertidao();
+			salvarDadosNoBanco();
+		}
 	}
 	
-	private void gravarCredito() {
+	private void facultarEmissaoCertidao(){
 		//popup de emissao de certidão
 		 if(JOptionPane.showConfirmDialog(null,"Imprimir Certidão", null,JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
 			 String arquivoDestino=Utilitario.escolherArquivo();
 			 
 			 //preenche as propriedades
 			 Map<String, String> properties = new HashMap<String,String>();
-			 properties.put("#001#", txtProcesso.getText());
+			 properties.put("#001#", fmtProcesso.getText());
 			 properties.put("P2", txtExequente.getText());
 			 properties.put("P3", lblPlano.getText());
 			 properties.put("P4", txtSetor.getText());
-			 properties.put("P5", txtDataDistribuicao.getText());
-			 properties.put("P6", txtDataRecebimento.getText());
-			 properties.put("P7", txtDataAnterioridade.getText());
-			 properties.put("P8", txtValorDivida.getText());			 
+			 properties.put("P5", fmtDataDistribuicao.getText());
+			 properties.put("P6", fmtDataRecebimento.getText());
+			 properties.put("P7", fmtDataAnterioridade.getText());
+			 properties.put("P8", fmtValorDivida.getText());			 
 			 properties.put("P9", cboPrioridade.getSelectedItem().toString());
 			 //properties.put("P10", new GregorianCalendar().getTime().toString());
 			 
@@ -367,27 +385,54 @@ public class InternalFrameTriagem extends JInternalFrame {
 				e.printStackTrace();
 			}
 		 }
-		 
+	}
+	
+	private void salvarDadosNoBanco(){
 		//grava no banco
 		 Credito credito = new Credito();
-		 credito.setDataAnterioridade(txtDataAnterioridade.getText());
-		 credito.setDataDistribuicao(txtDataDistribuicao.getText());
-		 credito.setDataRecebimento(txtDataRecebimento.getText());
+		 credito.setDataAnterioridade(fmtDataAnterioridade.getText());
+		 credito.setDataDistribuicao(fmtDataDistribuicao.getText());
+		 credito.setDataRecebimento(fmtDataRecebimento.getText());
 		 credito.setId_plano_execucao(planoRecebido.getIdPlano());
 		 String in_prioridadade=TipoPrioridade.retornaChave((String)cboPrioridade.getSelectedItem());		
 		 credito.setIn_prioridadade(in_prioridadade);
 		 
-		 
 		 credito.setLocalizacao(txtLocalizacao.getText());
 		 credito.setNomeExequente(txtExequente.getText());
 		 credito.setObservacao(txtObservacao.getText());
-		 credito.setProcesso(txtProcesso.getText());
+		 credito.setProcesso(fmtProcesso.getText());
 		 credito.setSetor(txtSetor.getText());
-		 credito.setValorDoPedido(txtValorDivida.getText());
+		 credito.setValorDoPedido(fmtValorDivida.getText());
 
 		 new CreditoDao().insereRegistro(credito);
-		 
 	}
+	
+	
+	private boolean isDadosValidos() {
+		
+		if(planoRecebido==null){
+			JOptionPane.showMessageDialog(null, "Plano de execução não selecionado!", "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		if (txtSetor.getText() == null || txtSetor.getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Setor não preenchido!", "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (txtSetor.getText() == null || txtExequente.getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Exequente não preenchido!", "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		if(!Utilitario.isDataValida(fmtDataDistribuicao.getText())){
+			JOptionPane.showMessageDialog(null, "Data da Distribuição inválida!", "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	
 	private void populaTabelaComDadosDoBanco() {
 
@@ -427,15 +472,13 @@ public class InternalFrameTriagem extends JInternalFrame {
 	  	this.doDefaultCloseAction();
 	}
 
-	private void validaDados() {
 
-	}
 
 	private void preencheCamposParaTeste(){
-		txtDataRecebimento.setText("30/05/2018");
-		txtDataAnterioridade.setText("18/01/2012");
+		fmtDataRecebimento.setText("30/05/2018");
+		fmtDataAnterioridade.setText("18/01/2012");
 		cboPrioridade.setSelectedItem("Verbas rescisórias");
-		txtValorDivida.setText("69.033,65");
+		fmtValorDivida.setText("069.033,65");
 		txtLocalizacao.setText("Gaveta A");
 		txtObservacao.setText("Pagar logo");
 	
