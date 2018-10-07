@@ -27,6 +27,7 @@ public class DialogSelecionarProcesso extends JDialog {
 	
 	//passagem de prâmetros entre frames
 	private InternalFrameTriagem framePrincipal;
+	//
 	private JFormattedTextField fmtProcesso;		
 	private final JPanel contentPanel = new JPanel();
 	private JLabel lblSetor,lblDataDistribuicao,lblExequente, lblSistema;	
@@ -167,6 +168,8 @@ public class DialogSelecionarProcesso extends JDialog {
 		
 		//passagem de prâmetros entre frames
 		this.framePrincipal=framePrincipal;
+		//
+		
 		preencheCamposParaTeste();
 	}
 	

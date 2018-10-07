@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import modelo.Advogado;
 import modelo.Parte;
 import modelo.Processo;
-import modelo.Processoold;
+
 import jdbc.DaoBasePJe1G;
 
 public class ProcessoPJe1GDao extends DaoBasePJe1G{

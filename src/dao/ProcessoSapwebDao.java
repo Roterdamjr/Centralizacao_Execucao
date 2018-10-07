@@ -7,7 +7,7 @@ import jdbc.DaoBaseSapweb;
 import modelo.Advogado;
 import modelo.Parte;
 import modelo.Processo;
-import modelo.Processoold;
+
 
 
 public class ProcessoSapwebDao extends DaoBaseSapweb {

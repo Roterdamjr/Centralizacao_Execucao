@@ -1,18 +1,14 @@
 package teste;
 
 import javax.swing.JInternalFrame;
-
 import java.awt.event.*;
 import java.awt.*;
-
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.JButton;
  
+@SuppressWarnings("serial")
 public class InternalFrameUm extends JInternalFrame {
 	private JTextField textField;  
  
@@ -20,12 +16,11 @@ public class InternalFrameUm extends JInternalFrame {
         super("Internal Frame Um",
               true, //resizable
                true, //closable
-              true, //maximizable
+              false, //maximizable
                true);//iconifiable  
  
          setSize(300,300);  
  
-         setSize(300,300);  
  
         JPanel panel = new JPanel();
          panel.setBackground(Color.GREEN);  
@@ -53,5 +48,6 @@ public class InternalFrameUm extends JInternalFrame {
     
     private void fechar(){
     	this.doDefaultCloseAction();
+    	dispose();
     }
  }

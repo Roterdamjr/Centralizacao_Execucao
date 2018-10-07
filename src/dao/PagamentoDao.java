@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import modelo.Credito;
@@ -10,7 +9,7 @@ import jdbc.DaoBase;
 
 public class PagamentoDao extends DaoBase{
 	
-	public List buscaPorEmpresaEPeriodo(int idEmpresa, int mes, int ano){
+	public List<Credito> buscaPorEmpresaEPeriodo(int idEmpresa, int mes, int ano){
 		
 		List<Credito> lista = new ArrayList<Credito>();
 	

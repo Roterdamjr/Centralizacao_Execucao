@@ -4,8 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 
 import modelo.Credito;
@@ -14,7 +13,7 @@ import jdbc.DaoBase;
 public class TriagemDao extends DaoBase{
 	
 
-	public List buscaPorEmpresa(int idEmpresa){
+	public List<Credito> buscaPorEmpresa(int idEmpresa){
 		
 		List<Credito> lista = new ArrayList<Credito>();
 			

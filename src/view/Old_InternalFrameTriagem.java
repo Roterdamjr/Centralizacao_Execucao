@@ -32,7 +32,7 @@ import dao.PlanoExecucaoDao;
 import dao.TriagemDao;
 
 import javax.swing.SwingConstants;
-
+  
 public class Old_InternalFrameTriagem extends JInternalFrame {
 	private JPanel contentPane;
 	private JTable tabela;

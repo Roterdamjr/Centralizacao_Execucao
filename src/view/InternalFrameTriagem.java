@@ -44,7 +44,7 @@ public class InternalFrameTriagem extends JInternalFrame {
 	private InternalFrameTriagem esteFrame;
 	private Processo processoRecebido;
 	private PlanoDeExecucao planoRecebido;
-	
+	//
 	private JPanel contentPane;
 	private JTable tabela;
 	private JButton btnSair;

@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.SQLException;
 
-import jdbc.DaoBasePJe1G;
 import jdbc.DaoBasePJe2G;
 
 public class ProcessoPJe2GDao extends DaoBasePJe2G{

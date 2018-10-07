@@ -11,7 +11,7 @@ public class PlanoExecucaoDao extends DaoBase{
 	
 
 	
-	public List buscaTodos(){
+	public List<String> buscaTodos(){
 		List<String> lista = new ArrayList<String>();
 		String obj;
 		
