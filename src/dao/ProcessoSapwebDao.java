@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -139,6 +140,69 @@ public class ProcessoSapwebDao extends DaoBaseSapweb {
 		}
 		return lista;
 	}
+	
+	
+	public ResultSet buscaRemessas() throws Exception{
+		
+		String query =  " 	select (substr(p.nr_processo_atual, 1, 7) || '-' ||	 " +
+				" 	                substr(p.nr_processo_atual, 8, 2) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 10, 4) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 14, 1) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 15, 2) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 17)) processo,	 " +
+				" 	                p.sq_processo	 " +
+				" 	                  from tb_processo p	 " +
+				" 	 inner join tb_item_lote_remessa ir    on p.sq_processo = ir.sq_processo	 " +
+				" 	 inner join tb_lote_remessa lr    on ir.sq_lote_remessa = lr.sq_lote_remessa	 " +
+				" 	 inner join tb_itinerario i    on lr.sq_itinerario = i.sq_itinerario	 " +
+				" 	 inner join TB_ROTA_LOTE_REMESSA r    on r.sq_lote_remessa = lr.sq_lote_remessa	 " +
+				" 	 where " +
+				//  "trunc(lr.dt_envio) > '01/08/2018' 	 " +
+				" 	    i.sq_setor_origem = p.sq_setor_julgador 	 " +
+				" 	   and i.sq_setor_destino = 5709  " + 
+				"  and p.sq_processo in(  9989212,11824089,10454202)  " +
+				" 	 order by processo";	 
+		
+		executaBusca(query);
+
+		return rs;
+	}
+	
+/*	public ArrayList<Processo> buscaRemessas() throws Exception{
+		ArrayList<Processo> lista= new ArrayList<Processo>();
+
+		String query =  " 	select (substr(p.nr_processo_atual, 1, 7) || '-' ||	 " +
+				" 	                substr(p.nr_processo_atual, 8, 2) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 10, 4) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 14, 1) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 15, 2) || '.' ||	 " +
+				" 	                substr(p.nr_processo_atual, 17)) processo,	 " +
+				" 	                sq_processo	 " +
+				" 	                  from tb_processo p	 " +
+				" 	 inner join tb_item_lote_remessa ir    on p.sq_processo = ir.sq_processo	 " +
+				" 	 inner join tb_lote_remessa lr    on ir.sq_lote_remessa = lr.sq_lote_remessa	 " +
+				" 	 inner join tb_itinerario i    on lr.sq_itinerario = i.sq_itinerario	 " +
+				" 	 inner join TB_ROTA_LOTE_REMESSA r    on r.sq_lote_remessa = lr.sq_lote_remessa	 " +
+				" 	 where trunc(lr.dt_envio) > '01/08/2018' 	 " +
+				" 	   and i.sq_setor_origem = p.sq_setor_julgador -- setor origem seja a vara	 " +
+				" 	   and i.sq_setor_destino = 5709  " +
+				" 	 order by processo";	 
+		
+		executaBusca(query);
+
+		try {
+			while (rs.next()) {
+				Processo obj = new Processo();
+				obj.setNumCnj(rs.getString(1));
+				obj.setSqProcesso(rs.getInt(2));
+				lista.add(obj);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
+	}*/
 /*	private boolean isMigaradoCLE(String numeroCnj){
 		
 	}

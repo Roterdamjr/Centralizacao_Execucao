@@ -5,23 +5,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.PlanoDeExecucao;
 import jdbc.DaoBase;
 
 public class PlanoExecucaoDao extends DaoBase{
 	
 
 	
-	public List<String> buscaTodos(){
-		List<String> lista = new ArrayList<String>();
-		String obj;
+	public ArrayList<PlanoDeExecucao> buscaTodos(){
+		ArrayList<PlanoDeExecucao> lista = new ArrayList<PlanoDeExecucao>();
+		
 		
 		String query = "select ID_PLANO_EXECUCAO,NOME_EMPRESA from TB_PLANO_EXECUCAO t1";		
 		
 		executaBusca(query);
 
 		try {
-			while (rs.next()) {				
-				obj=rs.getString(1);
+			while (rs.next()) {
+				PlanoDeExecucao obj=new PlanoDeExecucao();;
+				obj.setIdPlano(rs.getInt(1));
+				obj.setNomeEmpresa(rs.getString(2));
+				
 				lista.add(obj);
 			}
 		} catch (SQLException e) {
@@ -41,4 +45,5 @@ public class PlanoExecucaoDao extends DaoBase{
 
 	}
 	
+
 }

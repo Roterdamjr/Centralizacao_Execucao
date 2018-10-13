@@ -3,6 +3,9 @@ package modelo;
 import java.util.ArrayList;
 
 public class Processo {
+	
+	private int sqProcesso;
+	private int idProcesso;	
 	private String numCnj;
 	private String setor;
 	private String  exequente;
@@ -16,6 +19,22 @@ public class Processo {
 		partes.add(parte);
 	}
 	
+	public int getSqProcesso() {
+		return sqProcesso;
+	}
+
+	public void setSqProcesso(int sqProcesso) {
+		this.sqProcesso = sqProcesso;
+	}
+
+	public int getIdProcesso() {
+		return idProcesso;
+	}
+
+	public void setIdProcesso(int idProcesso) {
+		this.idProcesso = idProcesso;
+	}
+
 	public ArrayList<Advogado> getAdvogados() {
 		return advogados;
 	}

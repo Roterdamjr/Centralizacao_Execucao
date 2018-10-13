@@ -31,7 +31,8 @@ public class FramePrincipal extends JFrame {
 */	
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;	
-	private InternalFrameTriagem frameTriagem;
+	private InternalFrameRecebimento frameRecebimento;
+	
 	private InternalFrameUm frameUm;
     private InternalFrameDois frameDois;
     private InternalFrameTres frameTres;
@@ -136,7 +137,7 @@ public class FramePrincipal extends JFrame {
             	o dispose() apenas libera os recursos 
             	e a tela manteria o estado, exibindo os campos eventualmente preenchidos
             	*/
-            	frameTriagem=null;
+            	frameRecebimento=null;
             	frameUm=null;
             	frameDois=null;
             }
@@ -158,13 +159,13 @@ public class FramePrincipal extends JFrame {
 	}	
 	
 	private void exibeTriagem()	{
-		if(frameTriagem == null){
-			frameTriagem = new InternalFrameTriagem();
-			frameTriagem.addInternalFrameListener(adapter);		    
+		if(frameRecebimento == null){
+			frameRecebimento = new InternalFrameRecebimento();
+			frameRecebimento.addInternalFrameListener(adapter);		    
 		}
-		desktopPane.add(frameTriagem);	
-		frameTriagem.setVisible(true);
-		formataFrameInterno(frameTriagem);
+		desktopPane.add(frameRecebimento);	
+		frameRecebimento.setVisible(true);
+		formataFrameInterno(frameRecebimento);
 		mnbBarraMenu.setVisible(false);		
     }
 	
