@@ -13,6 +13,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.JButton;
  
+@SuppressWarnings("serial")
 public class InternalFrameTres extends JInternalFrame {
 	private JTextField textField;  
  

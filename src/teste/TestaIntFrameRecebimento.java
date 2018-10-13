@@ -8,10 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.InternalFrameEmpresa;
-import view.InternalFrameTriagem;
+import view.InternalFrameRecebimento;
 
-public class TestaIntFrameTriagem extends JFrame {
+public class TestaIntFrameRecebimento extends JFrame {
      
 	private JPanel contentPane;
 
@@ -22,7 +21,7 @@ public class TestaIntFrameTriagem extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TestaIntFrameTriagem frame = new TestaIntFrameTriagem();
+					TestaIntFrameRecebimento frame = new TestaIntFrameRecebimento();
 					
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -35,7 +34,7 @@ public class TestaIntFrameTriagem extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TestaIntFrameTriagem() {
+	public TestaIntFrameRecebimento() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1500, 1000);
 		contentPane = new JPanel();
@@ -47,7 +46,7 @@ public class TestaIntFrameTriagem extends JFrame {
 		contentPane.add(desktopPane, BorderLayout.CENTER);
 		
 		//InternalFrameEmpresa frame = new InternalFrameEmpresa();
-		InternalFrameTriagem frame = new InternalFrameTriagem();
+		InternalFrameRecebimento frame = new InternalFrameRecebimento();
 	    desktopPane.add(frame);
 	    frame.setVisible(true);
 	}

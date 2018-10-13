@@ -12,32 +12,35 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import teste.InternalFrameDois;
 import teste.InternalFrameTres;
 import teste.InternalFrameUm;
 
-public class FramePrincipal extends JFrame {
 
+@SuppressWarnings("serial")
+public class FramePrincipal extends JFrame {
+/*	//passagem de prâmetros entre frames 
+	private FramePrincipal esteFrame;
+	private boolean isLoginValido;
+	//
+*/	
 	private JPanel contentPane;
-	private JDesktopPane desktopPane;
+	private JDesktopPane desktopPane;	
+	private InternalFrameRecebimento frameRecebimento;
 	
-    private InternalFrameUm frameUm;
+	private InternalFrameUm frameUm;
     private InternalFrameDois frameDois;
     private InternalFrameTres frameTres;
- 
-    JMenuBar mnbBarraMenu;
-    JMenuItem mniFrameUm;
-    JMenuItem mniFrameDois;
-    InternalFrameAdapter adapter;
+    private JMenuBar mnbBarraMenu;
+    private JMenuItem mniframeTriagem;
+    private JMenuItem mniFrameDois;
+    private InternalFrameAdapter adapter;
     private boolean usuarioLogado;
-    private JMenuItem mniLogin;
     private JMenuItem mntmNewMenuItem;
     private JMenuItem mniTriagem;
     
@@ -72,6 +75,11 @@ public class FramePrincipal extends JFrame {
 		mnbBarraMenu.add(mnExecucao);
 		
 		mniTriagem = new JMenuItem("Triagem");
+		mniTriagem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				exibeTriagem();
+			}
+		});
 		mnExecucao.add(mniTriagem);
 		
 		mntmNewMenuItem = new JMenuItem("Empresa");
@@ -80,25 +88,15 @@ public class FramePrincipal extends JFrame {
 		JMenu mnuMenu = new JMenu("Teste");
 		mnbBarraMenu.add(mnuMenu);
 		
-		mniFrameUm = new JMenuItem("Item 1");
-		mniFrameUm.setEnabled(false);
-		mniFrameUm.addActionListener(new ActionListener() {
+		mniframeTriagem = new JMenuItem("Item 1");		
+		mniframeTriagem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				exibePanel1();
 			}
-		});
+		});		
+		mnuMenu.add(mniframeTriagem);
 		
-		mniLogin = new JMenuItem("Login");
-		mniLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				validaLogin();
-			}
-		});
-		mnuMenu.add(mniLogin);
-		mnuMenu.add(mniFrameUm);
-		
-		mniFrameDois = new JMenuItem("item 2");
-		mniFrameDois.setEnabled(false);
+		mniFrameDois = new JMenuItem("item 2");		
 		mniFrameDois.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				exibePanel2();
@@ -107,7 +105,6 @@ public class FramePrincipal extends JFrame {
 		mnuMenu.add(mniFrameDois);
 		
 		JMenuItem mniItem3 = new JMenuItem("item 3");
-		//mniItem3.setEnabled(false);
 		mniItem3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				exibePanel3();
@@ -130,39 +127,45 @@ public class FramePrincipal extends JFrame {
 		  ======================================================*/
 		
 		/* listener nos Internal Frames para observar 
-		  quando são fechados e exibir barra de menu */
+		  quando são fechados */
         adapter = new InternalFrameAdapter() {
             public void internalFrameClosed(InternalFrameEvent e) {
+            	//exibe barra de menu
             	mnbBarraMenu.setVisible(true);
+            	
+            	/*faz o garbage colecction remover os frames; 
+            	o dispose() apenas libera os recursos 
+            	e a tela manteria o estado, exibindo os campos eventualmente preenchidos
+            	*/
+            	frameRecebimento=null;
+            	frameUm=null;
+            	frameDois=null;
             }
         };        
         /* fim listenar */
         
-        validaLogin();
+        exibeLogin();
 	}
 	
-	private void validaLogin()	{
-        DialogLogin dialogo =new DialogLogin(this);        
-        dialogo.setVisible(true);
-        if(isUsuarioLogado()){
-        	mniLogin.setEnabled(false);
-        	mniFrameUm.setEnabled(true);
-        	mniFrameDois.setEnabled(true);
-        }
-	}
+
+	private void exibeLogin()	{
+		InternalFrameLogin frameLogin = new InternalFrameLogin();
+		frameLogin.addInternalFrameListener(adapter);	
+	    desktopPane.add(frameLogin);
+	    frameLogin.setVisible(true);
+	    
+		formataFrameInterno(frameLogin);
+		mnbBarraMenu.setVisible(false);		
+	}	
 	
 	private void exibeTriagem()	{
-		if(frameUm == null){
-			frameUm = new InternalFrameUm();
-			frameUm.addInternalFrameListener(adapter);		    
-		    desktopPane.add(frameUm);
-		    frameUm.setVisible(true);
-		}else{
-			frameUm.setVisible(true);
-			desktopPane.add(frameUm);
-		   
-		}	
-		formataFrameInterno(frameUm);
+		if(frameRecebimento == null){
+			frameRecebimento = new InternalFrameRecebimento();
+			frameRecebimento.addInternalFrameListener(adapter);		    
+		}
+		desktopPane.add(frameRecebimento);	
+		frameRecebimento.setVisible(true);
+		formataFrameInterno(frameRecebimento);
 		mnbBarraMenu.setVisible(false);		
     }
 	
@@ -171,12 +174,9 @@ public class FramePrincipal extends JFrame {
 		if(frameUm == null){
 			frameUm = new InternalFrameUm();
 			frameUm.addInternalFrameListener(adapter);		    
-		    desktopPane.add(frameUm);
-		    frameUm.setVisible(true);
-		}else{
-			frameUm.setVisible(true);
-			desktopPane.add(frameUm);		   
-		}	
+		}
+		desktopPane.add(frameUm);	
+		frameUm.setVisible(true);
 		formataFrameInterno(frameUm);
 		mnbBarraMenu.setVisible(false);		
     }
@@ -185,13 +185,10 @@ public class FramePrincipal extends JFrame {
 	private void exibePanel2()	{
 		if(frameDois == null){
 			frameDois = new InternalFrameDois();
-			frameDois.addInternalFrameListener(adapter);
-			frameDois.setVisible(true);
-            desktopPane.add(frameDois);
-        }else {
-        	desktopPane.add(frameDois);
-        	frameDois.setVisible(true);
+			frameDois.addInternalFrameListener(adapter);			       	
         }	
+		desktopPane.add(frameDois);
+		frameDois.setVisible(true);
 		formataFrameInterno(frameDois);
 		mnbBarraMenu.setVisible(false);
     }
@@ -218,7 +215,7 @@ public class FramePrincipal extends JFrame {
 			e.printStackTrace();
 		}	
 	    //retirar o painel superior
-	    ((BasicInternalFrameUI)frameInterno.getUI()).setNorthPane(null); 	    
+	    //((BasicInternalFrameUI)frameInterno.getUI()).setNorthPane(null); 	    
 	    //retirar bordas
 	    frameInterno.setBorder(null);
 	}

@@ -2,17 +2,18 @@ package utilitarios;
 
 import java.awt.Component;
 import java.io.File;
-import java.text.DateFormat;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
+
+import teste.TestaClasse;
 
 public class Utilitario {
 	
@@ -32,6 +33,16 @@ public class Utilitario {
 	    	bloquearLiberarCampos(neto,acao);
     		//componente.setEnabled(acao);
 	    }
+	}
+	
+	public static void limparCampos(JPanel panel){
+		 Component[] componentes = panel.getComponents(); 
+		 
+		 for (Component componente : componentes) {
+			 Class componentType = componente.getClass().getComponentType();
+			 System.out.println(componentType.toString());
+	    		//componente.setEnabled();
+		    }
 	}
 	
 	public static void exibirEsconderCampos(JPanel panel, boolean acao){
@@ -97,7 +108,7 @@ public class Utilitario {
 
     	sMes.toString();
     	
-    	//String sMes = String.valueOf(calendarioGregoriano.get(GregorianCalendar.MONTH));
+    	//String sMes = String.valueOf(calendarioGregoriano.get(GregorianCalendar.MONTH-> invalido
     	return sDia+" " +sMes;
     }
     
@@ -155,4 +166,30 @@ public class Utilitario {
     	return isValida;
     	
     }
+
+	public static boolean isNumeroValido(String textoDoNumero){
+		
+		/*Verfica se o número em foramto texto é válido
+		 3.  1.245,66" -> invalido
+		 845.497,6"-> valido
+		 845.497, 6"-> invalido
+		 045.497,6 "-> valido		
+		*/
+		
+		boolean isValido=true;
+		
+		String textoFormatado= textoDoNumero.trim().replace(".","");
+		textoFormatado= textoFormatado.replace(",",".");
+				
+		try{
+			BigDecimal valor=null;
+			System.out.println(textoFormatado);
+			valor =new BigDecimal(textoFormatado);			
+		}catch(Exception e){
+			isValido=false;
+		}
+		
+		return isValido;
+	}
+
 }

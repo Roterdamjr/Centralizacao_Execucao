@@ -8,6 +8,13 @@ public class PlanoDeExecucao {
 	private String depositoMensal;
 	private String contaCorrente;
 	private String dataDeferimento;
+	
+	public String toString(){
+		return nomeEmpresa;
+	}
+	
+	
+	
 	public String getNomeEmpresa() {
 		return nomeEmpresa;
 	}

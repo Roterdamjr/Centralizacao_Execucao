@@ -1,18 +1,36 @@
 package teste;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import utilitarios.Utilitario;
-import view.DialogSelecionarPlano;
-import dao.PlanoExecucaoDao;
+
 import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-		new TestaClasse().selecionaPlano();
-//		new TestaClasse().geraData();
+		System.out.println(new TestaClasse().validaNumero("  3.  1.245,66"));
+		System.out.println(new TestaClasse().validaNumero("  845.497,6"));
+		System.out.println(new TestaClasse().validaNumero("  845.497, 6"));
+		System.out.println(new TestaClasse().validaNumero("  045.497,6 "));
+	}
+	
+	public boolean validaNumero(String textoDoNumero){
+		
+		boolean isValido=true;
+		String textoFormatado= textoDoNumero.trim().replace(".","");
+		textoFormatado= textoFormatado.replace(",",".");
+		
+		BigDecimal valor=null;
+		try{
+			valor =new BigDecimal(textoFormatado);
+			
+		}catch(Exception e){
+			isValido=false;
+		}
+		
+		return isValido;
 	}
 	
 /*	public void executa(){
@@ -44,20 +62,12 @@ public class TestaClasse {
 		new CreditoDao().insereRegistro(credito);			
 	}*/
 	
-	private void banco() {
+/*	private void banco() {
 		List lista = new PlanoExecucaoDao().buscaTodos();
 		
-	}
+	}*/
 	
-	private void selecionaPlano() {
-		//passagem de prâmetros entre frames 
-		DialogSelecionarPlano dialogo=new DialogSelecionarPlano(null);
-		dialogo.setVisible(true);
-		
-		//carrega dados na tela
-/*		System.out.println("no retorno:"+planoRecebido);
-		lblPlano.setText(planoRecebido);*/
-	}
+	
 	
 	public void geraDocumento(){
 		 Map<String, String> properties = new HashMap<String,String>();

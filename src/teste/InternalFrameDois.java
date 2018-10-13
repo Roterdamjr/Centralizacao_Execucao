@@ -1,12 +1,18 @@
 package teste;
 
 import javax.swing.JInternalFrame;
-import java.awt.event.*;
+
+
 import java.awt.*;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
  
+@SuppressWarnings("serial")
 public class InternalFrameDois extends JInternalFrame {
 	private JTextField textField;  
  
@@ -31,6 +37,18 @@ public class InternalFrameDois extends JInternalFrame {
          textField = new JTextField();
          panel.add(textField);
          textField.setColumns(10);
+         
+         JButton btnNewButton = new JButton("fechar");
+         btnNewButton.addActionListener(new ActionListener() {
+         	public void actionPerformed(ActionEvent arg0) {
+         		fechar();
+         	}
+         });
+         panel.add(btnNewButton);
  
+     }
+     
+     private void fechar(){
+    	 dispose();
      }
 }

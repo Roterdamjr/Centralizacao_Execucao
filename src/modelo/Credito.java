@@ -1,8 +1,5 @@
 package modelo;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Credito {
 	private int			id_plano_execucao;

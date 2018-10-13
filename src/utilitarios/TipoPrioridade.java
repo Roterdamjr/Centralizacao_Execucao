@@ -1,6 +1,7 @@
 package utilitarios;
 
-import java.lang.Thread.State;
+
+
 
 public enum TipoPrioridade {
 	

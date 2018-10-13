@@ -18,6 +18,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+@SuppressWarnings("serial")
 public class FramePrincipalComFrameLogin extends JFrame {
 
 	private JPanel contentPane;
