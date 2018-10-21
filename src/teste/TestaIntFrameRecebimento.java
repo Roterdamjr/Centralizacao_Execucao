@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import view.InternalFrameRecebimento;
 
+
 public class TestaIntFrameRecebimento extends JFrame {
      
 	private JPanel contentPane;
@@ -22,6 +23,7 @@ public class TestaIntFrameRecebimento extends JFrame {
 			public void run() {
 				try {
 					TestaIntFrameRecebimento frame = new TestaIntFrameRecebimento();
+
 					
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -36,7 +38,7 @@ public class TestaIntFrameRecebimento extends JFrame {
 	 */
 	public TestaIntFrameRecebimento() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1500, 1000);
+		setBounds(50, 50, 1300,900);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -45,7 +47,7 @@ public class TestaIntFrameRecebimento extends JFrame {
 		JDesktopPane desktopPane = new JDesktopPane();
 		contentPane.add(desktopPane, BorderLayout.CENTER);
 		
-		//InternalFrameEmpresa frame = new InternalFrameEmpresa();
+		//InternalFrameUm frame = new InternalFrameUm();
 		InternalFrameRecebimento frame = new InternalFrameRecebimento();
 	    desktopPane.add(frame);
 	    frame.setVisible(true);

@@ -1,0 +1,10 @@
+
+
+insert into lx_plano
+(NOME_EMPRESA,ID_PLANO_EXECUCAO)
+values(?,?)
+
+
+
+
+

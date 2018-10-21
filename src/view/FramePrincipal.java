@@ -20,6 +20,9 @@ import javax.swing.event.InternalFrameEvent;
 import teste.InternalFrameDois;
 import teste.InternalFrameTres;
 import teste.InternalFrameUm;
+import utilitarios.EscopoGlobal;
+
+
 
 
 @SuppressWarnings("serial")
@@ -41,8 +44,8 @@ public class FramePrincipal extends JFrame {
     private JMenuItem mniFrameDois;
     private InternalFrameAdapter adapter;
     private boolean usuarioLogado;
-    private JMenuItem mntmNewMenuItem;
     private JMenuItem mniTriagem;
+    private JMenuItem mniRecebimento;
     
 	/**
 	 * Launch the application.
@@ -66,7 +69,6 @@ public class FramePrincipal extends JFrame {
 	public FramePrincipal() {
 		setTitle("Plano de Execu\u00E7\u00F5es");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 704, 484);
 		
 		mnbBarraMenu = new JMenuBar();
 		setJMenuBar(mnbBarraMenu);
@@ -74,18 +76,18 @@ public class FramePrincipal extends JFrame {
 		JMenu mnExecucao = new JMenu("Execu\u00E7\u00E3o");
 		mnbBarraMenu.add(mnExecucao);
 		
-		mniTriagem = new JMenuItem("Triagem");
-		mniTriagem.addActionListener(new ActionListener() {
+		
+		mniRecebimento = new JMenuItem("Recebimento");
+		mniRecebimento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				exibeTriagem();
+				exibeRecebimento();
 			}
 		});
-		mnExecucao.add(mniTriagem);
-		
-		mntmNewMenuItem = new JMenuItem("Empresa");
-		mnExecucao.add(mntmNewMenuItem);
-		
-		JMenu mnuMenu = new JMenu("Teste");
+		mnExecucao.add(mniRecebimento);
+
+		/*@TESTE
+		*/
+/*		JMenu mnuMenu = new JMenu("Teste");
 		mnbBarraMenu.add(mnuMenu);
 		
 		mniframeTriagem = new JMenuItem("Item 1");		
@@ -94,23 +96,7 @@ public class FramePrincipal extends JFrame {
 				exibePanel1();
 			}
 		});		
-		mnuMenu.add(mniframeTriagem);
-		
-		mniFrameDois = new JMenuItem("item 2");		
-		mniFrameDois.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				exibePanel2();
-			}
-		});
-		mnuMenu.add(mniFrameDois);
-		
-		JMenuItem mniItem3 = new JMenuItem("item 3");
-		mniItem3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				exibePanel3();
-			}
-		});
-		mnuMenu.add(mniItem3);
+*/
 		
 		JMenu mnAjuda = new JMenu("Ajuda");
 		mnbBarraMenu.add(mnAjuda);
@@ -125,6 +111,8 @@ public class FramePrincipal extends JFrame {
 		/*=======================================================
 		  			C´O D I G O  P E R S O N A L I Z A D O
 		  ======================================================*/
+		setSize(1200, 800);// larguraXaltura
+		
 		
 		/* listener nos Internal Frames para observar 
 		  quando são fechados */
@@ -138,13 +126,16 @@ public class FramePrincipal extends JFrame {
             	e a tela manteria o estado, exibindo os campos eventualmente preenchidos
             	*/
             	frameRecebimento=null;
-            	frameUm=null;
-            	frameDois=null;
+
+            	/* @TESTE*/
+            	/* frameUm=null;
+            	frameDois=null;*/
             }
         };        
         /* fim listenar */
         
         exibeLogin();
+        
 	}
 	
 
@@ -156,9 +147,10 @@ public class FramePrincipal extends JFrame {
 	    
 		formataFrameInterno(frameLogin);
 		mnbBarraMenu.setVisible(false);		
+		//setTitle(getTitle() + " - " + EscopoGlobal.getLoginUsuario());
 	}	
 	
-	private void exibeTriagem()	{
+	private void exibeRecebimento()	{
 		if(frameRecebimento == null){
 			frameRecebimento = new InternalFrameRecebimento();
 			frameRecebimento.addInternalFrameListener(adapter);		    
@@ -169,8 +161,8 @@ public class FramePrincipal extends JFrame {
 		mnbBarraMenu.setVisible(false);		
     }
 	
-	
-	private void exibePanel1()	{
+	/*@TESTE*/
+/*	private void exibePanel1()	{
 		if(frameUm == null){
 			frameUm = new InternalFrameUm();
 			frameUm.addInternalFrameListener(adapter);		    
@@ -180,32 +172,8 @@ public class FramePrincipal extends JFrame {
 		formataFrameInterno(frameUm);
 		mnbBarraMenu.setVisible(false);		
     }
-		
-	
-	private void exibePanel2()	{
-		if(frameDois == null){
-			frameDois = new InternalFrameDois();
-			frameDois.addInternalFrameListener(adapter);			       	
-        }	
-		desktopPane.add(frameDois);
-		frameDois.setVisible(true);
-		formataFrameInterno(frameDois);
-		mnbBarraMenu.setVisible(false);
-    }
-	
-	private void exibePanel3()	{
-		if(frameTres == null){
-			frameTres = new InternalFrameTres();
-			frameTres.addInternalFrameListener(adapter);
-			frameTres.setVisible(true);
-            desktopPane.add(frameTres);
-	    }else {
-	    	desktopPane.add(frameTres);
-	    	frameTres.setVisible(true);
-	    }	
-		formataFrameInterno(frameTres);
-		mnbBarraMenu.setVisible(false);		
-    }
+			
+*/
 	
 	private void formataFrameInterno(JInternalFrame frameInterno)	{
 		// maximiza

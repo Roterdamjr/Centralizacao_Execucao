@@ -18,10 +18,13 @@ import javax.swing.JScrollBar;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.Box;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrameTeste extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -76,12 +79,31 @@ public class FrameTeste extends JFrame {
 		JLabel lblNewLabel = new JLabel("New label");
 		horizontalBox.add(lblNewLabel);
 		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null},
+				{null, null},
+				{null, null},
+			},
+			new String[] {
+				"New column", "New column"
+			}
+		));
+		panel_1.add(table, BorderLayout.CENTER);
+		
 
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		
 		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultTableModel modelo=(DefaultTableModel) table.getModel();
+				modelo.setRowCount(0);
+			}
+		});
 		panel_2.add(btnNewButton);
 	}
 

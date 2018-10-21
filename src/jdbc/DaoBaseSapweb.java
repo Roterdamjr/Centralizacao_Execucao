@@ -43,6 +43,9 @@ public class DaoBaseSapweb {
 		return rs;
 	}
 	
-
+	protected PreparedStatement getStatmentParam(String query) throws Exception{
+		stmt = connection.prepareStatement(query);
+		return stmt;
+	}
 	
 }

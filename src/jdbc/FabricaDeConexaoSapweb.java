@@ -24,10 +24,10 @@ public class FabricaDeConexaoSapweb {
 		} 
 		
 		try{
-			return DriverManager.getConnection("jdbc:oracle:thin:@//egestao.trt1.jus.br:1521/egestao.trt1.jus.br",	"eg","jaws");
+			//return DriverManager.getConnection("jdbc:oracle:thin:@//egestao.trt1.jus.br:1521/egestao.trt1.jus.br",	"eg","jaws");
 			//return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"app","app");
 			//return DriverManager.getConnection("jdbc:oracle:thin:@//bdoracle.trt1.jus.br:1521/sapdianp.trt1.jus.br",	"roterdam","jaws");
-			
+			return DriverManager.getConnection("jdbc:oracle:thin:@//racstg3-vip:1521/saptrt.trt1.jus.br",	"roterdam","jaws");
 
 		}catch(SQLException e){
 			throw new RuntimeException(e);

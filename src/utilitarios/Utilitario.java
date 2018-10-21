@@ -3,17 +3,20 @@ package utilitarios;
 import java.awt.Component;
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
-
-import teste.TestaClasse;
 
 public class Utilitario {
 	
@@ -64,7 +67,27 @@ public class Utilitario {
 
 	}
 	
-    public static String escolherArquivo() {
+	public static java.sql.Date converteDataParaSQLData(Date data){
+		return new java.sql.Date(data.getTime());
+			
+	}
+	
+	public static java.sql.Date converteStringParaSQLData(String data){
+		return converteDataParaSQLData(converteStringParaDate(data));
+			
+	}
+	
+	public static BigDecimal converteStringParaBigDecimal(String texto){
+		/*
+		para os formatos "123.567,89"
+		*/
+
+		texto=texto.replace(".", "");
+		texto=texto.replace(",", ".");
+		return new BigDecimal(texto);
+	}
+	
+     public static String escolherArquivo() {
     	
     	String arquivo=null;
     	
@@ -138,15 +161,15 @@ public class Utilitario {
 	}
     
     public static MaskFormatter buscaMascaraValor(){
-		MaskFormatter mascaraProcesso=null;
+		MaskFormatter mascara=null;
 		
 		try{
-			mascaraProcesso = new MaskFormatter("###.###.###,##");
-			mascaraProcesso.setValidCharacters("0123456789");
+			mascara = new MaskFormatter("###.###.###,##");
+			mascara.setValidCharacters("0123456789");
 		}catch (Exception e){
-			System.out.println("Máscara de data inválida!");
+			System.out.println("Máscara  inválida!");
 		}
-		return mascaraProcesso;		
+		return mascara;		
 	}
     
     public static boolean isDataValida(String dataTexto){
@@ -178,8 +201,8 @@ public class Utilitario {
 		
 		boolean isValido=true;
 		
-		String textoFormatado= textoDoNumero.trim().replace(".","");
-		textoFormatado= textoFormatado.replace(",",".");
+		String temp= textoDoNumero.trim().replace(".","");
+		String textoFormatado= temp.replace(",",".");
 				
 		try{
 			BigDecimal valor=null;
@@ -192,4 +215,31 @@ public class Utilitario {
 		return isValido;
 	}
 
+	public static void populaModeloJTableComResultset(JTable tabela,ResultSet rs) {		
+
+		try {
+			int columns = rs.getMetaData().getColumnCount();
+			while (rs.next()) {
+				Object[] row = new Object[columns];
+				for (int i = 1; i <= columns; i++) {
+					row[i - 1] = rs.getObject(i);
+					 //System.out.println("inserindo "+ row.toString());
+				}
+				((DefaultTableModel) tabela.getModel()).insertRow(
+						rs.getRow() - 1, row);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	
+	
+	public static String buscaDataAtual(){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+		return dateFormat.format(new Date());
+		
+		 
+	}
 }

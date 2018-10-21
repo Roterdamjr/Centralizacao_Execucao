@@ -5,12 +5,21 @@ public class Credito {
 	private int			id_plano_execucao;
 	private String		dataRecebimento;
 	private String		setor ;	
-	private String 		processo ;
+	private String 		numCnj ;
 	private String		dataDistribuicao;
 	private String		nomeExequente;
 	private String		dataAnterioridade;
 	private String		in_prioridadade;
-	private String	valorDoPedido;
+	private String		valorDoPedido;
+	private String		indicadorSituacao;
+	
+	
+	public String getNumCnj() {
+		return numCnj;
+	}
+	public void setNumCnj(String numCnj) {
+		this.numCnj = numCnj;
+	}
 	private String		localizacao; 
 	private String		observacao;
 /*	
@@ -50,11 +59,13 @@ public class Credito {
 	public void setSetor(String setor) {
 		this.setor = setor;
 	}
-	public String getProcesso() {
-		return processo;
+
+	
+	public String getIndicadorSituacao() {
+		return indicadorSituacao;
 	}
-	public void setProcesso(String processo) {
-		this.processo = processo;
+	public void setIndicadorSituacao(String indicadorSituacao) {
+		this.indicadorSituacao = indicadorSituacao;
 	}
 	public String getDataDistribuicao() {
 		return dataDistribuicao;

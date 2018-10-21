@@ -1,0 +1,11 @@
+-na lista de procs colocar os do PJE
+
+-colocar origem do processo, físico migra, pje
+
+-bloco anonimo no historico
+
+-queries externas, em arquivo
+
+- tempo para logout
+
+-metodo para popular qualquer jtable com arraylist

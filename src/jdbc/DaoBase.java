@@ -32,17 +32,13 @@ public class DaoBase {
 		}
 	}
 
-	protected void executaDML(String query){
+	protected void executaDML(String query) throws Exception{
 
 		System.out.println(query);
 		PreparedStatement stmt;
-				
-		try {
-			stmt = connection.prepareStatement(query);
-			stmt.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		stmt = connection.prepareStatement(query);
+		stmt.executeQuery();
 
 	}
 	
@@ -60,6 +56,12 @@ public class DaoBase {
 		
 		return rs;
 	}
+	
+	protected PreparedStatement getStatmentParam(String query) throws Exception{
+		stmt = connection.prepareStatement(query);
+		return stmt;
+	}
+	
 	
 
 	

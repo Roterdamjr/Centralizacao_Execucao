@@ -3,11 +3,11 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import jdbc.DaoBasePJe1G;
 import modelo.Advogado;
 import modelo.Parte;
 import modelo.Processo;
 
-import jdbc.DaoBasePJe1G;
 
 public class ProcessoPJe1GDao extends DaoBasePJe1G{
 

@@ -43,6 +43,9 @@ public class DaoBasePJe1G {
 		return rs;
 	}
 	
-
+	protected PreparedStatement getStatmentParam(String query) throws Exception{
+		stmt = connection.prepareStatement(query);
+		return stmt;
+	}
 	
 }

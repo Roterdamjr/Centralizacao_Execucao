@@ -1,11 +1,21 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
+import utilitarios.Utilitario;
 import jdbc.DaoBase;
+import modelo.Advogado;
 import modelo.Credito;
+import modelo.HistoricoSituacaoCredito;
+import modelo.Parte;
+import modelo.Processo;
 
 public class CreditoDao extends DaoBase{
 	
@@ -49,7 +59,7 @@ public class CreditoDao extends DaoBase{
 		return rs;
 	}
 	
-	public void insereRegistro(Credito credito) {
+	/*public void insereCredito(Credito credito) throws Exception{
 		
 		String query= 		
 				" 	insert into tb_credito	 "	 +
@@ -82,7 +92,117 @@ public class CreditoDao extends DaoBase{
 
 		executaDML(query);
 	
+	}*/
+	
+	public void insereCredito(Credito credito,HistoricoSituacaoCredito historico) throws Exception{
+		
+		
+		FileReader fr = new FileReader("C:/Eclipse projects kepler/Centralizacao_Execucao/queries/InsereCredito.sql");		
+	    BufferedReader buffReader = new BufferedReader(fr);
+		
+	    String linha;
+	    String query="";
+	    
+	    while ((linha = buffReader.readLine()) != null)	    {    	
+	    	query+=linha;
+	    }
+	    fr.close();
+	    
+	    PreparedStatement stmt= getStatmentParam(query);
+	    stmt.setInt(1,credito.getId_plano_execucao());	    		
+	    stmt.setDate(2,Utilitario.converteStringParaSQLData(credito.getDataRecebimento()));	    	    
+	    stmt.setString(3,credito.getSetor());	    
+	    stmt.setString(4,credito.getNumCnj());
+	    stmt.setDate(5,Utilitario.converteStringParaSQLData(credito.getDataDistribuicao()));	   
+	    stmt.setString(6,credito.getNomeExequente());
+	    stmt.setDate(7,Utilitario.converteStringParaSQLData(credito.getDataAnterioridade()));
+	    stmt.setString(8,credito.getIn_prioridadade() );
+	    stmt.setBigDecimal(9,Utilitario.converteStringParaBigDecimal(credito.getValorDoPedido()));
+	    stmt.setString(10,credito.getLocalizacao());
+	    stmt.setString(11,credito.getObservacao());
+	    stmt.setString(12,credito.getIndicadorSituacao());
+	    		
+	    System.out.println(query);			
+	    stmt.execute();		
+	  
+	    insereHistorico(historico);
+	    
 	}
+	
+	private void insereHistorico(HistoricoSituacaoCredito historico) throws Exception{
+		
+		/*seq para o hitorico
+		*/
+		int sequencia=0;
+		executaBusca("select max(id_credito) from tb_credito");
+		try {
+			while (rs.next()) {	
+				sequencia=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		historico.setIdCredito(sequencia);
+		/*seq para o hitorico
+		*/
+		
+		//busca query em arquivo
+		FileReader fr = new FileReader("C:/Eclipse projects kepler/Centralizacao_Execucao/queries/InsereHistorico.sql");		
+	    BufferedReader buffReader = new BufferedReader(fr);
+		
+	    String linha;
+	    String query="";
+	    
+	    while ((linha = buffReader.readLine()) != null)	    {    	
+	    	query+=linha;
+	    }
+	    fr.close();
+	    
+	    PreparedStatement stmt= getStatmentParam(query);
+	    stmt.setString(1,historico.getIndicadorSituacao());
+	    stmt.setString(2,historico.getDataSituacao());
+	    stmt.setInt(3,historico.getIdUsuario());
+	    stmt.setInt(4,	historico.getIdCredito());   		
+	    
+	    
+	    System.out.println(query);			
+	    stmt.execute();
+	    
+	}
+	
+/*	private void insereHistorico(HistoricoSituacaoCredito historico) throws Exception{
+		
+		String query="	insert into tb_hist_sit_credito( " +
+						"IN_SITUACAO,DT_SITUACAO,ID_USUARIO) values('" +
+						historico.getIndicadorSituacao() + "',TO_DATE('" + 
+						historico.getDataSituacao()+ "', 'DD/MM/YYYY HH24:MI:SS')," + 
+						historico.getIdUsuario()+")"	;
+		
+		executaDML(query);
+	}*/
+
+	public ArrayList<Credito> buscaPorSituacao(String tipo) throws Exception{
+		
+		ArrayList<Credito> lista= new ArrayList<Credito>();
+		
+		String query =  " select processo from tb_credito where in_situacao='"+ tipo+"'";	 
+		
+		executaBusca(query);
+
+		try {
+			while (rs.next()) {
+				Credito obj = new Credito();
+				obj.setNumCnj(rs.getString(1));
+				lista.add(obj);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
+	}	
+	
 	
 	public String concatenaVariavel(String variavel){
 		if(variavel==null)
@@ -105,39 +225,5 @@ public class CreditoDao extends DaoBase{
 			return ",'"+variavel+"'";		
 	}
 	
-/*	public List<Credito> buscaPorEmpresa(int idEmpresa){
-	
-	List<Credito> lista = new ArrayList<Credito>();
-		
-	String query = "select * from tb_triagem_credito_fev t "
-				+ "	where fk_empresa=" +  idEmpresa; 						
-	
-	executaBusca(query);
 
-	try {
-		while (rs.next()) {
-			Credito obj=new Credito();
-			 
-			obj.setSetor(rs.getString("setor"));
-			Date dt = rs.getDate("DT_RECEBIMENTO");
-			String dtString =  rs.getDate("DT_RECEBIMENTO").toString();
-			obj.setProcesso(rs.getString("processo"));
-			obj.setExequente(rs.getString("exequente"));
-			//obj.setAnterioridade(anterioridade);
-			obj.setIn_classificacao(rs.getString("in_classificacao"));
-			obj.setAlvPgParcial(rs.getString("PAG_PARC_ALV"));
-			obj.setValorDoPedido(rs.getDouble("VALOR_PEDIDO"));
-			obj.setValorPago(rs.getDouble("VALOR_PAGO"));
-			obj.setLocalizacao(rs.getString("localizacao"));
-			obj.setObservacao(rs.getString("observacao"));
-			
-			lista.add(obj);
-			
-		}
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return lista;
-}*/
 }

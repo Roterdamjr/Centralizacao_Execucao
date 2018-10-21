@@ -24,8 +24,11 @@ public class FabricaDeConexao {
 		} 
 		
 		try{
+			/*@TESTE CASA*/
 			return DriverManager.getConnection("jdbc:oracle:thin:@//egestao.trt1.jus.br:1521/egestao.trt1.jus.br",					"app","app");
-			//return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"app","app");
+			
+			/*@TESTE PRODUCAO*/
+			//return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"sae_dsv","itauna");
 					
 
 		}catch(SQLException e){

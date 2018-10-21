@@ -17,7 +17,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import modelo.Usuario;
+import utilitarios.EscopoGlobal;
+import jdk.nashorn.internal.objects.Global;
+import dao.UsuarioDao;
 
+  
 
 @SuppressWarnings("serial")
 public class InternalFrameLogin extends JInternalFrame {
@@ -26,12 +31,12 @@ public class InternalFrameLogin extends JInternalFrame {
 	private InternalFrameTriagem frameChamador;
 	//
 	*/
-	private JTextField txtUsuario;
+	private JTextField txtLogin;
 	private JPasswordField pswSenha;
 
-	/**
+/*	*//**
 	 * Launch the application.
-	 */
+	 *//*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,7 +48,7 @@ public class InternalFrameLogin extends JInternalFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -77,9 +82,9 @@ public class InternalFrameLogin extends JInternalFrame {
 		JLabel lblNewLabel = new JLabel("Usu\u00E1rio");
 		panel_7.add(lblNewLabel);
 		
-		txtUsuario = new JTextField();
-		panel_7.add(txtUsuario);
-		txtUsuario.setColumns(10);
+		txtLogin = new JTextField();
+		panel_7.add(txtLogin);
+		txtLogin.setColumns(10);
 		
 		JPanel panel_8 = new JPanel();
 		panel_4.add(panel_8);
@@ -116,33 +121,57 @@ public class InternalFrameLogin extends JInternalFrame {
 		
 		//faz ENTER disparar botão "OK"		
 		this.getRootPane().setDefaultButton(btnOK);
-	
+		
+		/*@TESTE		*/
+		populaDadosParaTeste();
 	}
 
 	private void validarUsuario(){
-		System.out.println("validando");
-		
+
 		//o getPassword retorn arry de caracter, por isso deve ser craida uma string 
 		String senhaDigitada= new String(pswSenha.getPassword());
-		
-		if(txtUsuario.getText().equals("") || senhaDigitada.equals("")){
+		String senha=null;
+				
+		if(txtLogin.getText().equals("") || senhaDigitada.equals("")){
             JOptionPane.showMessageDialog(null, "Login ou Senha inválido.", "Login", JOptionPane.ERROR_MESSAGE);
         }
 		else{
-			String loginn="r";
-			String senhaa="a";
-				
-	        if(txtUsuario.getText().equals(loginn) && senhaDigitada.equals(senhaa)){
-	        	this.doDefaultCloseAction();
-	        	dispose();  
-	        }
-	        else{
-	        	JOptionPane.showMessageDialog(null,"Login ou Senha inválidos.","Login",JOptionPane.ERROR_MESSAGE);
-	                        pswSenha.setText("");
-	        }
+			Usuario usuario	= buscaDadosNoBanco(txtLogin.getText());
+			senha=usuario.getSenha();
+
+			if(senha!=null){				
+				if(senhaDigitada.equals(senha)){
+					EscopoGlobal.setUsuarioLogado(usuario);  
+					this.doDefaultCloseAction();
+					dispose();  
+				}else{
+					JOptionPane.showMessageDialog(null,"Login ou Senha inválidos.","Login",JOptionPane.ERROR_MESSAGE);
+				}
+			
+			}else{
+				JOptionPane.showMessageDialog(null,"Login ou Senha inválidos.","Login",JOptionPane.ERROR_MESSAGE);
+			}
                 
         }//else do login e senha vazios
-		txtUsuario.setText("");
+		txtLogin.setText("");
         pswSenha.setText("");
+	}
+	
+	private Usuario buscaDadosNoBanco(String login){
+		Usuario usuario=null;
+		try {
+			usuario=new UsuarioDao().buscaPorLogin(txtLogin.getText());
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			JOptionPane.showMessageDialog(null,"Erro de banco de dados","Login",JOptionPane.ERROR_MESSAGE);				
+		}
+		
+		return usuario;
+	}
+
+	private void populaDadosParaTeste(){
+		txtLogin.setText("roterdam.junior");
+		pswSenha.setText("abcd1234");
 	}
 }

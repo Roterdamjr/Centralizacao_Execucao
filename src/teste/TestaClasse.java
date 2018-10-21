@@ -5,18 +5,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utilitarios.Utilitario;
-
 import documento.GeradorDeDocumento;
 
 public class TestaClasse {
 	public static void main(String[] args) {
-		System.out.println(new TestaClasse().validaNumero("  3.  1.245,66"));
-		System.out.println(new TestaClasse().validaNumero("  845.497,6"));
-		System.out.println(new TestaClasse().validaNumero("  845.497, 6"));
-		System.out.println(new TestaClasse().validaNumero("  045.497,6 "));
+		//new TestaClasse().executa();
+
+
+		System.out.println(Utilitario.converteStringParaBigDecimal("4.555.555,55"));
+		System.out.println(Utilitario.converteStringParaBigDecimal("55,55"));
+		System.out.println(Utilitario.converteStringParaBigDecimal("0,55"));
+		System.out.println(Utilitario.converteStringParaBigDecimal("555,00"));
+		
 	}
 	
-	public boolean validaNumero(String textoDoNumero){
+	public void executa(){
+		
+		
+		try {
+			new SAEDao().insereCredito();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+/*	public boolean validaNumero(String textoDoNumero){
 		
 		boolean isValido=true;
 		String textoFormatado= textoDoNumero.trim().replace(".","");
@@ -31,36 +46,9 @@ public class TestaClasse {
 		}
 		
 		return isValido;
-	}
-	
-/*	public void executa(){
-		String id_plano_execucao="4";
-		String		dataRecebimento="30/05/2018";
-		String		setor ="40 VT/RJ" ;	
-		 String 	processo ="0162000-57.2009.5.01.0040";
-		 String		dataDistribuicao="16/12/2009";
-		 String		nomeExequente="Wilson Maria dos Santos Filho";
-		 String		dataAnterioridade="18/01/2012";
-		 String		in_prioridadade="QDG";
-		 String		valorDoPedido="68.033,65";
-		 String		localizacao="Gaveta"; 
-		 String		observacao="Medina na agua";
-				
-		Credito credito= new Credito();	
-		credito.setId_plano_execucao(Integer.parseInt(id_plano_execucao)) ;		
-		credito.setDataRecebimento(dataRecebimento);
-		credito.setSetor(setor)			;
-		credito.setProcesso(processo) 		;
-		credito.setDataDistribuicao(dataDistribuicao);
-		credito.setNomeExequente(nomeExequente)	;
-		credito.setDataAnterioridade(dataAnterioridade);
-		credito.setIn_prioridadade(in_prioridadade);
-		credito.setValorDoPedido(valorDoPedido);		
-		credito.setLocalizacao(localizacao);
-		credito.setObservacao(observacao) ;
-		
-		new CreditoDao().insereRegistro(credito);			
 	}*/
+	
+
 	
 /*	private void banco() {
 		List lista = new PlanoExecucaoDao().buscaTodos();
